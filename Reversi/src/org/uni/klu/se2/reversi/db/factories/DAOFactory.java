@@ -1,5 +1,7 @@
 package org.uni.klu.se2.reversi.db.factories;
 
+import java.sql.Connection;
+
 import org.uni.klu.se2.reversi.db.interfaces.GameDAO;
 import org.uni.klu.se2.reversi.db.interfaces.UserDAO;
 
