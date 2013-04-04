@@ -1,4 +1,4 @@
-package org.uni.klu.se2.reversi.db.dao;
+package org.uni.klu.se2.reversi.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.uni.klu.se2.reversi.data.User;
-import org.uni.klu.se2.reversi.db.dao.factories.H2DBDAOFactory;
-import org.uni.klu.se2.reversi.db.dao.interfaces.UserDAO;
+import org.uni.klu.se2.reversi.db.factories.H2DBDAOFactory;
+import org.uni.klu.se2.reversi.db.interfaces.UserDAO;
 
 public class H2DBUserDAO implements UserDAO {
 

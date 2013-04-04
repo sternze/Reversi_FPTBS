@@ -1,4 +1,4 @@
-package org.uni.klu.se2.reversi.db.dao.interfaces;
+package org.uni.klu.se2.reversi.db.interfaces;
 
 import java.util.List;
 

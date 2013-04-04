@@ -1,12 +1,12 @@
-package org.uni.klu.se2.reversi.db.dao.factories;
+package org.uni.klu.se2.reversi.db.factories;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.uni.klu.se2.reversi.db.dao.H2DBGameDAO;
-import org.uni.klu.se2.reversi.db.dao.H2DBUserDAO;
+import org.uni.klu.se2.reversi.db.H2DBGameDAO;
+import org.uni.klu.se2.reversi.db.H2DBUserDAO;
 
 public class H2DBDAOFactory extends DAOFactory {
 	public static final String DRIVER="org.h2.Driver";
