@@ -1,17 +1,26 @@
 package org.uni.klu.se2.reversi.data;
 
-public class Game {
-	private int ID;
+import java.io.Serializable;
+import java.util.UUID;
+
+public class Game implements Serializable {
+	private UUID ID;
 	private String blackFields;
 	private String whiteFields;
 	private boolean finished;
+	private User blackPlayer;
+	private User whitePlayer;
 	
-	public int getID() {
+	public UUID getID() {
 		return ID;
 	}
 	
-	public void setID(int iD) {
+	public void setID(UUID iD) {
 		ID = iD;
+	}
+	
+	public void setID(String iD) {
+		ID = UUID.fromString(iD);
 	}
 	
 	public String getBlackFields() {
@@ -37,4 +46,22 @@ public class Game {
 	public void setFinished(boolean finished) {
 		this.finished = finished;
 	}
+
+	public User getBlackPlayer() {
+		return blackPlayer;
+	}
+
+	public void setBlackPlayer(User blackPlayer) {
+		this.blackPlayer = blackPlayer;
+	}
+
+	public User getWhitePlayer() {
+		return whitePlayer;
+	}
+
+	public void setWhitePlayer(User whitePlayer) {
+		this.whitePlayer = whitePlayer;
+	}
+	
+	
 }
