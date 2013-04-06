@@ -1,10 +1,14 @@
-package org.uni.klu.se2.reversi.db.factories;
+package uni_klu.se2.reversi.db.factories;
 
-import java.sql.Connection;
+import uni_klu.se2.reversi.db.interfaces.GameDAO;
+import uni_klu.se2.reversi.db.interfaces.UserDAO;
 
-import org.uni.klu.se2.reversi.db.interfaces.GameDAO;
-import org.uni.klu.se2.reversi.db.interfaces.UserDAO;
-
+/**
+ * This class is the abstract Factory class for the factory-DAO-Pattern combination
+ * @author Daniel
+ * @version 1.0
+ *
+ */
 public abstract class DAOFactory {
 	
 	// List of DAO types supported by the factory

@@ -1,4 +1,4 @@
-package org.uni.klu.se2.reversi.db;
+package uni_klu.se2.reversi.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,11 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.uni.klu.se2.reversi.data.Game;
-import org.uni.klu.se2.reversi.data.User;
-import org.uni.klu.se2.reversi.db.factories.H2DBDAOFactory;
-import org.uni.klu.se2.reversi.db.interfaces.GameDAO;
 
+import uni_klu.se2.reversi.data.Game;
+import uni_klu.se2.reversi.db.factories.H2DBDAOFactory;
+import uni_klu.se2.reversi.db.interfaces.GameDAO;
+
+/**
+ * This class is the DAO class in the DAO Pattern
+ * @author Daniel
+ * @version 1.0
+ *
+ */
 public class H2DBGameDAO implements GameDAO {
 
 	public H2DBGameDAO() { }
