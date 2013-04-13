@@ -21,6 +21,7 @@ public abstract class DAOFactory {
 	public abstract GameDAO getGameDAO();
 	public abstract UserDAO getUserDAO();
 	public abstract boolean createDatabase();
+	public abstract boolean recreateDatabase();
 	
 	public static DAOFactory getDAOFactory(
 		      int whichFactory) {

@@ -46,6 +46,7 @@ public class H2DBUserDAO implements UserDAO {
 					//System.out.println("Deleted: " + stmt.getUpdateCount() + " Entries");
 					successful = true;
 				}
+				stmt.close();
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
@@ -98,6 +99,8 @@ public class H2DBUserDAO implements UserDAO {
 					//System.out.println("Deleted: " + stmt.getUpdateCount() + " Entries");
 					successful = true;
 				}
+				
+				stmt.close();
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
@@ -142,6 +145,7 @@ public class H2DBUserDAO implements UserDAO {
 					u.setPassWordHash(rs.getString(2));
 				}
 				rs.close();
+				stmt.close();
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
@@ -182,6 +186,7 @@ public class H2DBUserDAO implements UserDAO {
 					//System.out.println("Deleted: " + stmt.getUpdateCount() + " Entries");
 					successful = true;
 				}
+				stmt.close();
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
@@ -222,6 +227,7 @@ public class H2DBUserDAO implements UserDAO {
 					users.add(u);
 				}
 				rs.close();
+				stmt.close();
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{

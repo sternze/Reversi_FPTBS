@@ -38,15 +38,18 @@ public class H2DBGameDAO implements GameDAO {
 		if(conn != null) {
 			try {
 				PreparedStatement stmt = conn.prepareStatement("INSERT INTO GAME VALUES(" +
-						"?, ?, ?, ?)");
+						"?, ?, ?, ?, ?)");
 				
 				stmt.setString(1, gameID.toString());
 				stmt.setNull(2, java.sql.Types.ARRAY);
 				stmt.setNull(3, java.sql.Types.ARRAY);
 				stmt.setBoolean(4, false);
+				stmt.setBoolean(5, false);
 				
 				
 				stmt.executeUpdate();
+				
+				stmt.close();
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
@@ -102,6 +105,8 @@ public class H2DBGameDAO implements GameDAO {
 					//System.out.println("Deleted: " + stmt.getUpdateCount() + " Entries");
 					successful = true;
 				}
+				
+				stmt.close();
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
@@ -133,7 +138,7 @@ public class H2DBGameDAO implements GameDAO {
 		
 		if(conn != null) {
 			try {
-				String selectString = "SELECT ID, blackFields, whiteFields, finished FROM GAME";
+				String selectString = "SELECT ID, blackFields, whiteFields, finished, blacksTurn FROM GAME";
 				if(!includeFinishedGames) {
 					selectString += " WHERE finished = ?";
 				}
@@ -152,10 +157,12 @@ public class H2DBGameDAO implements GameDAO {
 					g.setBlackFields(rs.getString(2));
 					g.setWhiteFields(rs.getString(3));
 					g.setFinished(rs.getBoolean(4));
+					g.setBlacksTurn(rs.getBoolean(5));
 					
 					games.add(g);
 				}
 				rs.close();
+				stmt.close();
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
@@ -189,7 +196,7 @@ public class H2DBGameDAO implements GameDAO {
 		if(conn != null) {
 			try {
 				String selectString = "SELECT game.ID, game.blackFields, " +
-						"game.whiteFields, game.finished FROM GAME game, PlayingGame playing " +
+						"game.whiteFields, game.finished, game.blacksTurn FROM GAME game, PlayingGame playing " +
 						"WHERE (playing.BlackPlayer = ? OR playing.WhitePlayer = ?) AND " + 
 						"game.ID = playing.GameID";
 				if(!includeFinishedGames) {
@@ -213,10 +220,12 @@ public class H2DBGameDAO implements GameDAO {
 					g.setBlackFields(rs.getString(2));
 					g.setWhiteFields(rs.getString(3));
 					g.setFinished(rs.getBoolean(4));
+					g.setBlacksTurn(rs.getBoolean(5));
 					
 					games.add(g);
 				}
 				rs.close();
+				stmt.close();
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
@@ -248,7 +257,7 @@ public class H2DBGameDAO implements GameDAO {
 		
 		if(conn != null) {
 			try {
-				String selectString = "SELECT ID, blackFields, whiteFields, finished FROM GAME" +
+				String selectString = "SELECT ID, blackFields, whiteFields, finished, blacksTurn FROM GAME" +
 						"WHERE ID = ?";
 				
 
@@ -263,9 +272,10 @@ public class H2DBGameDAO implements GameDAO {
 					game.setBlackFields(rs.getString(2));
 					game.setWhiteFields(rs.getString(3));
 					game.setFinished(rs.getBoolean(4));
-					
+					game.setBlacksTurn(rs.getBoolean(5));
 				}
 				rs.close();
+				stmt.close();
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
@@ -297,17 +307,19 @@ public class H2DBGameDAO implements GameDAO {
 		if(conn != null) {
 			try {
 				PreparedStatement stmt = conn.prepareStatement("UPDATE GAME SET " +
-						"blackFields = ?, whiteFields = ?, finished = ? WHERE ID = ?");
+						"blackFields = ?, whiteFields = ?, finished = ?, blacksTurn = ? WHERE ID = ?");
 				
 				stmt.setString(1, g.getBlackFields());
 				stmt.setString(2, g.getWhiteFields());
 				stmt.setBoolean(3, g.isFinished());
-				stmt.setString(2, g.getID().toString());
+				stmt.setBoolean(4, g.isBlacksTurn());
+				stmt.setString(5, g.getID().toString());
 				
 				if(stmt.executeUpdate() > 0) {
 					//System.out.println("Deleted: " + stmt.getUpdateCount() + " Entries");
 					successful = true;
 				}
+				stmt.close();
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{

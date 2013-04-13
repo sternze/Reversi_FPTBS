@@ -68,11 +68,14 @@ public class H2DBDAOFactory extends DAOFactory {
 				}
 			}
 			
+			prepstmt.close();
+			
 			prepstmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS GAME(" +
 					"ID UUID primary key not null," +
 					"blackFields varchar(" + Integer.MAX_VALUE + ")," +
 					"whiteFields varchar(" + Integer.MAX_VALUE + ")," +
-					"finished BOOLEAN)");
+					"finished BOOLEAN," +
+					"blacksTurn BOOLEAN)");
 			
 			if(!prepstmt.execute()) {
 				if(prepstmt.getUpdateCount() > 0) {
@@ -81,6 +84,8 @@ public class H2DBDAOFactory extends DAOFactory {
 					System.out.println("Table GAME already exists");
 				}
 			}
+			
+			prepstmt.close();
 			
 			prepstmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS PlayingGame(" +
 					"BlackPlayer varchar(255) not null," + 
@@ -98,12 +103,62 @@ public class H2DBDAOFactory extends DAOFactory {
 					System.out.println("Table PlayingGame already exists");
 				}
 			}
+			prepstmt.close();
 			
 		} catch(Exception ex) {
 			created = false;
 			System.out.println(ex.toString());
 		}
 		return created;
+	}
+
+	@Override
+	public boolean recreateDatabase() {
+		boolean deleted = true;
+		
+		try {
+			Connection conn = createConnection();
+			PreparedStatement prepstmt = conn.prepareStatement("DROP TABLE PlayingGame");
+			
+			if(!prepstmt.execute()) {
+				if(prepstmt.getUpdateCount() > 0) {
+					System.out.println("Table PlayingGame dropped");
+				} else {
+					System.out.println("Table PlayingGame does not exists");
+				}
+			}
+			prepstmt.close();
+			
+			prepstmt = conn.prepareStatement("DROP TABLE GAME");
+			
+			if(!prepstmt.execute()) {
+				if(prepstmt.getUpdateCount() > 0) {
+					System.out.println("Table GAME dropped");
+				} else {
+					System.out.println("Table GAME does not exists");
+				}
+			}
+			
+			prepstmt.close();
+			
+			prepstmt = conn.prepareStatement("DROP TABLE USER");
+			
+			if(!prepstmt.execute()) {
+				if(prepstmt.getUpdateCount() > 0) {
+					System.out.println("Table USER dropped");
+				} else {
+					System.out.println("Table USER does not exists");
+				}
+			}
+			
+			prepstmt.close();
+			
+		} catch(Exception ex) {
+			deleted = false;
+			System.out.println(ex.toString());
+		}
+		
+		return deleted && createDatabase();
 	}
 
 }

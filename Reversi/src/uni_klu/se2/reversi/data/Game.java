@@ -26,6 +26,7 @@ public class Game implements Serializable {
 	private String blackFields;
 	private String whiteFields;
 	private boolean finished;
+	private boolean blacksTurn;
 	private User blackPlayer;
 	private User whitePlayer;
 	
@@ -80,6 +81,15 @@ public class Game implements Serializable {
 	public void setWhitePlayer(User whitePlayer) {
 		this.whitePlayer = whitePlayer;
 	}
+
+	public boolean isBlacksTurn() {
+		return blacksTurn;
+	}
+
+	public void setBlacksTurn(boolean blacksTurn) {
+		this.blacksTurn = blacksTurn;
+	}
+	
 	
 	
 }
