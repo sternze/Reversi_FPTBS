@@ -12,6 +12,8 @@ import uni_klu.se2.reversi.data.*;
 import uni_klu.se2.reversi.engine.IPlayer;
 import uni_klu.se2.reversi.engine.ReversiEngine;
 import uni_klu.se2.reversi.engine.player.*;
+import uni_klu.se2.reversi.helper.SocketHelper;
+import uni_klu.se2.reversi.helper.SocketHelperNotification;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -19,7 +21,7 @@ import javax.swing.JLabel;
 
 import javax.swing.JComboBox;
 
-public class test extends IPlayer {
+public class test extends IPlayer implements IReversiGUI {
 
 	private JFrame frame;
 	private static Board  board;
@@ -40,14 +42,20 @@ public class test extends IPlayer {
 	private int drawT;
 	private JComboBox<String> comboBoxWhite;
 	private JComboBox<String> comboBoxBlack;
+	private JButton btnCreateGame;
+	private JButton btnConnectToGame;
 	private IPlayer Pwhite;
 	private IPlayer Pblack;
-	
+	private SocketHelper socketHelper;
+	private boolean selectedIndexChanged;
+	private boolean isNetworkGameFirst;
+	private boolean isNetworkGameSecond;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			
 			public void run() {
 				try {
 					board = new Board();
@@ -77,6 +85,7 @@ public class test extends IPlayer {
 	public test(Board board) {
 		super(board);
 		myTurn = false;
+		socketHelper = new SocketHelper(this);
 		initialize();
 	}
 
@@ -88,6 +97,9 @@ public class test extends IPlayer {
 		whiteT = 0;
 		drawT = 0;
 		frame = new JFrame();
+		isNetworkGameFirst = false;
+		isNetworkGameSecond = false;
+		selectedIndexChanged = false;
 		frame.setBounds(100, 100, 1013, 718);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -151,7 +163,7 @@ public class test extends IPlayer {
 		lblPlayerBlack.setBounds(798, 204, 77, 14);
 		frame.getContentPane().add(lblPlayerBlack);
 		
-		String[] str = { "Human Player", "Random Computer Player", "Simple MinMax Player", "NaivDiskSquare(d=1)", "NaivDiskSquare(d=2)", "NaivDiskSquare(d=3)", "NaivDiskSquare(d=4)", "NaivDiskSquare(d=5)", "NaivDiskSquare(d=6)", "NaivDiskSquare(d=7)" };
+		String[] str = { "Human Player", "Random Computer Player", "Simple MinMax Player", "NaivDiskSquare(d=3)", "NaivDiskSquare(d=4)", "NaivDiskSquare(d=5)", "NaivDiskSquare(d=6)", "NaivDiskSquare(d=7)", "DeepMinMax(d=3)", "DeepMinMax(d=4)", "DeepMinMax(d=5)", "DeepMinMax(d=6)", "DeepMinMax(d=7)" };
 
 		comboBoxWhite = new JComboBox<String>(str);
 		comboBoxWhite.setBounds(798, 229, 189, 20);
@@ -166,11 +178,30 @@ public class test extends IPlayer {
 		JButton btnNewButton_1 = new JButton("New Game");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				 selectedIndexChanged = true;
 				 newGame();
 			}
 		});
 		btnNewButton_1.setBounds(798, 276, 189, 60);
 		frame.getContentPane().add(btnNewButton_1);
+		
+		btnCreateGame = new JButton("Create Game");
+		btnCreateGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				socketHelper.createGameAndWaitForClient(8200, true);
+			}
+		});
+		btnCreateGame.setBounds(798, 376, 189, 60);
+		frame.getContentPane().add(btnCreateGame);
+		
+		btnConnectToGame = new JButton("Connect Game");
+		btnConnectToGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				 socketHelper.connectToHost("localhost", 8200);
+			}
+		});
+		btnConnectToGame.setBounds(798, 476, 189, 60);
+		frame.getContentPane().add(btnConnectToGame);
 
 		white = new Color(242, 161, 33);
 		black = new Color(33, 45, 78);
@@ -181,6 +212,7 @@ public class test extends IPlayer {
 			for (int j = 0; j < 8; j++)
 			{
 				JButton btnNewButton = new JButton(i + " " + j);
+				btnNewButton.setOpaque(true);
 				btnNewButton.setBounds(35 + i * 80, 35 + j * 80, 75, 75);
 				btnNewButton.setEnabled(false);
 				if (fields[i][j].getStatus() == FieldStatus.BLACK)
@@ -358,65 +390,135 @@ public class test extends IPlayer {
 	
 	private void newGame() 
 	{
-
+		if (isNetworkGameFirst)
+		{
+			socketHelper.closeConnection();
+			isNetworkGameFirst = false;
+			return;
+		} else if (isNetworkGameSecond)
+		{
+			socketHelper.closeConnection();
+			isNetworkGameSecond = false;
+			return;
+		}
 		System.out.println("new game!");
 		board = new Board();
 		paintBoard();
-		switch(comboBoxWhite.getSelectedIndex())
+		if (selectedIndexChanged)
 		{
-			case 0:
-				Pwhite = this; break;
-			case 1:
-				Pwhite = new RandomComputerPlayer(board); break;
-			case 2:
-				Pwhite = new SimpleMinMaxComputerPlayer(board); break;
-			case 3:
-				Pwhite = new NaivDiskSquareComputerPlayer(board, 1); break;
-			case 4:
-				Pwhite = new NaivDiskSquareComputerPlayer(board, 2); break;
-			case 5:
-				Pwhite = new NaivDiskSquareComputerPlayer(board, 3); break;
-			case 6:
-				Pwhite = new NaivDiskSquareComputerPlayer(board, 4); break;
-			case 7:
-				Pwhite = new NaivDiskSquareComputerPlayer(board, 5); break;
-			case 8:
-				Pwhite = new NaivDiskSquareComputerPlayer(board, 6); break;
-			case 9:
-				Pwhite = new NaivDiskSquareComputerPlayer(board, 7); break;
-			default:
-				Pwhite = this;		 break;
+			switch(comboBoxWhite.getSelectedIndex())
+			{
+				case 0:
+					Pwhite = this; break;
+				case 1:
+					Pwhite = new RandomComputerPlayer(board); break;
+				case 2:
+					Pwhite = new SimpleMinMaxComputerPlayer(board); break;
+				case 3:
+					Pwhite = new NaivDiskSquareComputerPlayer(board, 3); break;
+				case 4:
+					Pwhite = new NaivDiskSquareComputerPlayer(board, 4); break;
+				case 5:
+					Pwhite = new NaivDiskSquareComputerPlayer(board, 5); break;
+				case 6:
+					Pwhite = new NaivDiskSquareComputerPlayer(board, 6); break;
+				case 7:
+					Pwhite = new NaivDiskSquareComputerPlayer(board, 7); break;
+				case 8:
+					Pwhite = new DeepMinMaxComputerPlayer(board, 3); break;
+				case 9:
+					Pwhite = new DeepMinMaxComputerPlayer(board, 4); break;
+				case 10:
+					Pwhite = new DeepMinMaxComputerPlayer(board, 5); break;
+				case 11:
+					Pwhite = new DeepMinMaxComputerPlayer(board, 6); break;
+				case 12:
+					Pwhite = new DeepMinMaxComputerPlayer(board, 7); break;
+				default:
+					Pwhite = this;		 break;
+			}
+			switch(comboBoxBlack.getSelectedIndex())
+			{
+				case 0:
+					Pblack = this; break;
+				case 1:
+					Pblack = new RandomComputerPlayer(board); break;
+				case 2:
+					Pblack = new SimpleMinMaxComputerPlayer(board); break;
+				case 3:
+					Pblack = new NaivDiskSquareComputerPlayer(board, 3); break;
+				case 4:
+					Pblack = new NaivDiskSquareComputerPlayer(board, 4); break;
+				case 5:
+					Pblack = new NaivDiskSquareComputerPlayer(board, 5); break;
+				case 6:
+					Pblack = new NaivDiskSquareComputerPlayer(board, 6); break;
+				case 7:
+					Pblack = new NaivDiskSquareComputerPlayer(board, 7); break;
+				case 8:
+					Pblack = new DeepMinMaxComputerPlayer(board, 3); break;
+				case 9:
+					Pblack = new DeepMinMaxComputerPlayer(board, 4); break;
+				case 10:
+					Pblack = new DeepMinMaxComputerPlayer(board, 5); break;
+				case 11:
+					Pblack = new DeepMinMaxComputerPlayer(board, 6); break;
+				case 12:
+					Pblack = new DeepMinMaxComputerPlayer(board, 7); break;
+				default:
+					Pblack = this;		 break;
+			}
 		}
-		switch(comboBoxBlack.getSelectedIndex())
-		{
-			case 0:
-				Pblack = this; break;
-			case 1:
-				Pblack = new RandomComputerPlayer(board); break;
-			case 2:
-				Pblack = new SimpleMinMaxComputerPlayer(board); break;
-			case 3:
-				Pblack = new NaivDiskSquareComputerPlayer(board, 1); break;
-			case 4:
-				Pblack = new NaivDiskSquareComputerPlayer(board, 2); break;
-			case 5:
-				Pblack = new NaivDiskSquareComputerPlayer(board, 3); break;
-			case 6:
-				Pblack = new NaivDiskSquareComputerPlayer(board, 4); break;
-			case 7:
-				Pblack = new NaivDiskSquareComputerPlayer(board, 5); break;
-			case 8:
-				Pblack = new NaivDiskSquareComputerPlayer(board, 6); break;
-			case 9:
-				Pblack = new NaivDiskSquareComputerPlayer(board, 7); break;
-			default:
-				Pblack = this;		 break;
-		}
+		selectedIndexChanged = false;
 		engine = new ReversiEngine(board, Pblack, Pwhite);
 		Pwhite.setEngine(engine);
 		Pblack.setEngine(engine);
 		engine.watcher = this;
 		this.setEngine(engine);
 		engine.start();
+	}
+
+	public void socketHelperNotification(SocketHelperNotification notfication) {
+		switch(notfication)
+		{
+		case INITIALISED: System.out.println("SocketHelperNotification: Initialized"); break;
+		case WAITING: System.out.println("SocketHelperNotification: Waiting"); break;
+		case CONNECTED_AS_FIRST: System.out.println("SocketHelperNotification: Connected as First"); 
+			System.out.println("new game!");
+			isNetworkGameFirst = true;
+			isNetworkGameSecond = false;
+			board = new Board();
+			paintBoard();
+			Pwhite = new SocketPlayer(board, socketHelper);
+			Pblack = new RandomComputerPlayer(board);
+			engine = new ReversiEngine(board, Pwhite, Pblack);
+			Pwhite.setEngine(engine);
+			Pblack.setEngine(engine);
+			engine.watcher = this;
+			this.setEngine(engine);
+			engine.start();
+
+		break;
+		case CONNECTED_AS_SECOND: System.out.println("SocketHelperNotification: Connected as Second"); 
+			System.out.println("new game!");
+			isNetworkGameFirst = false;
+			isNetworkGameSecond = true;
+			board = new Board();
+			paintBoard();
+			Pblack = new SocketPlayer(board, socketHelper);
+			Pwhite = new RandomComputerPlayer(board);
+			engine = new ReversiEngine(board, Pwhite, Pblack);
+			Pwhite.setEngine(engine);
+			Pblack.setEngine(engine);
+			engine.watcher = this;
+			this.setEngine(engine);
+			engine.start();
+		break;
+		case DISCONNECTED: System.out.println("SocketHelperNotification: Disconnected"); break;
+		case RECONNECTING: System.out.println("SocketHelperNotification: Reconnecting"); break;
+		case ERROR: System.out.println("SocketHelperNotification: Error"); break;
+		default: break;
+		}
+		
 	}
 }
