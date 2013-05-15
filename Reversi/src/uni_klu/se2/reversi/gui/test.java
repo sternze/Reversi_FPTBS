@@ -196,6 +196,7 @@ public class test extends IPlayer implements IReversiGUI {
 		btnNewButton_1.setBounds(798, 276, 189, 60);
 		frame.getContentPane().add(btnNewButton_1);
 		
+
 		btnCreateGame = new JButton("Create Socket");
 		btnCreateGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -430,36 +431,71 @@ public class test extends IPlayer implements IReversiGUI {
 		engine = null;
 		board = new Board();
 		paintBoard();
-		switch(comboBoxWhite.getSelectedIndex())
+		if (selectedIndexChanged)
 		{
-			case 0:
-				Pwhite = this; break;
-			case 1:
-				Pwhite = new RandomComputerPlayer(board); break;
-			case 2:
-				Pwhite = new SimpleMinMaxComputerPlayer(board); break;
-			case 3:
-				Pwhite = new NaivDiskSquareComputerPlayer(board, 3); break;
-			case 4:
-				Pwhite = new NaivDiskSquareComputerPlayer(board, 4); break;
-			case 5:
-				Pwhite = new NaivDiskSquareComputerPlayer(board, 5); break;
-			case 6:
-				Pwhite = new NaivDiskSquareComputerPlayer(board, 6); break;
-			case 7:
-				Pwhite = new NaivDiskSquareComputerPlayer(board, 7); break;
-			case 8:
-				Pwhite = new DeepMinMaxComputerPlayer(board, 3); break;
-			case 9:
-				Pwhite = new DeepMinMaxComputerPlayer(board, 4); break;
-			case 10:
-				Pwhite = new DeepMinMaxComputerPlayer(board, 5); break;
-			case 11:
-				Pwhite = new DeepMinMaxComputerPlayer(board, 6); break;
-			case 12:
-				Pwhite = new DeepMinMaxComputerPlayer(board, 7); break;
-			default:
-				Pwhite = this;		 break;
+
+			switch(comboBoxWhite.getSelectedIndex())
+			{
+				case 0:
+					Pwhite = this; break;
+				case 1:
+					Pwhite = new RandomComputerPlayer(board); break;
+				case 2:
+					Pwhite = new SimpleMinMaxComputerPlayer(board); break;
+				case 3:
+					Pwhite = new NaivDiskSquareComputerPlayer(board, 3); break;
+				case 4:
+					Pwhite = new NaivDiskSquareComputerPlayer(board, 4); break;
+				case 5:
+					Pwhite = new NaivDiskSquareComputerPlayer(board, 5); break;
+				case 6:
+					Pwhite = new NaivDiskSquareComputerPlayer(board, 6); break;
+				case 7:
+					Pwhite = new NaivDiskSquareComputerPlayer(board, 7); break;
+				case 8:
+					Pwhite = new DeepMinMaxComputerPlayer(board, 3); break;
+				case 9:
+					Pwhite = new DeepMinMaxComputerPlayer(board, 4); break;
+				case 10:
+					Pwhite = new DeepMinMaxComputerPlayer(board, 5); break;
+				case 11:
+					Pwhite = new DeepMinMaxComputerPlayer(board, 6); break;
+				case 12:
+					Pwhite = new DeepMinMaxComputerPlayer(board, 7); break;
+				default:
+					Pwhite = this;		 break;
+			}
+			switch(comboBoxBlack.getSelectedIndex())
+			{
+				case 0:
+					Pblack = this; break;
+				case 1:
+					Pblack = new RandomComputerPlayer(board); break;
+				case 2:
+					Pblack = new SimpleMinMaxComputerPlayer(board); break;
+				case 3:
+					Pblack = new NaivDiskSquareComputerPlayer(board, 3); break;
+				case 4:
+					Pblack = new NaivDiskSquareComputerPlayer(board, 4); break;
+				case 5:
+					Pblack = new NaivDiskSquareComputerPlayer(board, 5); break;
+				case 6:
+					Pblack = new NaivDiskSquareComputerPlayer(board, 6); break;
+				case 7:
+					Pblack = new NaivDiskSquareComputerPlayer(board, 7); break;
+				case 8:
+					Pblack = new DeepMinMaxComputerPlayer(board, 3); break;
+				case 9:
+					Pblack = new DeepMinMaxComputerPlayer(board, 4); break;
+				case 10:
+					Pblack = new DeepMinMaxComputerPlayer(board, 5); break;
+				case 11:
+					Pblack = new DeepMinMaxComputerPlayer(board, 6); break;
+				case 12:
+					Pblack = new DeepMinMaxComputerPlayer(board, 7); break;
+				default:
+					Pblack = this;		 break;
+			}
 		}
 		switch(comboBoxBlack.getSelectedIndex())
 		{
@@ -549,4 +585,5 @@ public class test extends IPlayer implements IReversiGUI {
 		// TODO Auto-generated method stub
 		
 	}
+
 }

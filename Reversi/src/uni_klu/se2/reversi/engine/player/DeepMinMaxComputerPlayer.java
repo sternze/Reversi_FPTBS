@@ -59,11 +59,11 @@ public class DeepMinMaxComputerPlayer extends IPlayer
 		bc.execute();
 	}
 
+
 	@Override
 	public void signalLastMove() {
 		// TODO Auto-generated method stub
 		
 	}
-
 
 }

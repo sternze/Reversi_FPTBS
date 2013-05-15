@@ -1,7 +1,7 @@
 package uni_klu.se2.reversi.engine;
 
 import uni_klu.se2.reversi.gui.IReversiGUI;
-import uni_klu.se2.reversi.gui.test;
+import uni_klu.se2.reversi.gui.IReversiGUI;
 import uni_klu.se2.reversi.data.Board;
 import uni_klu.se2.reversi.data.BoardStatus;
 import uni_klu.se2.reversi.data.Move;

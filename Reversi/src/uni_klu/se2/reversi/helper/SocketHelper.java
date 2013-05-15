@@ -8,10 +8,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import javax.swing.SwingWorker;
-
 import uni_klu.se2.reversi.data.Board;
 import uni_klu.se2.reversi.data.Move;
 import uni_klu.se2.reversi.engine.ReversiEngine;
+
 import uni_klu.se2.reversi.gui.IReversiGUI;
 
 public class SocketHelper {

@@ -1,13 +1,5 @@
 package uni_klu.se2.reversi.engine.player;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.List;
-import java.util.Random;
 
 import uni_klu.se2.reversi.data.Board;
 import uni_klu.se2.reversi.data.BoardStatus;
@@ -78,6 +70,4 @@ public class SocketPlayer extends IPlayer
 			socketHelper.sendMove(lastMove);
 		}
 	}
-
-
 }
