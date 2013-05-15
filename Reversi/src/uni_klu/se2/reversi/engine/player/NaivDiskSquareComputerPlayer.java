@@ -59,5 +59,11 @@ public class NaivDiskSquareComputerPlayer extends IPlayer
 		bc.execute();
 	}
 
+	@Override
+	public void signalLastMove() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

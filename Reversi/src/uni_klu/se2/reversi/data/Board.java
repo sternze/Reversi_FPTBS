@@ -24,8 +24,12 @@ public class Board
 	private int         blackFieldsOnBoard;
 	private boolean     fieldCountsUpdated;
 	private final int   BOARDSIZE = 8;
+	private Move        lastMove;
 
 	
+	public Move getLastMove() {
+		return lastMove;
+	}
 	public             Board                () 
 	{
 		super();
@@ -38,6 +42,7 @@ public class Board
 		currentLegalMovesCalculated = false;
 		fieldCountsUpdated          = false;
 		statusCalculated            = false;
+		lastMove                    = null;
 	}	
 	public             Board                (Field[][] fields, FieldStatus currentPlayer) 
 	{
@@ -53,6 +58,7 @@ public class Board
 		currentLegalMovesCalculated = false;
 		fieldCountsUpdated          = false;
 		statusCalculated            = false;
+		lastMove                     = null;
 	}		
 	public Board       cloneBoard           () 
 	{
@@ -64,6 +70,7 @@ public class Board
 			return this.status;	
 		statusCalculated = true;
 		this.status = BoardStatus.INPROGRESS;
+		currentLegalMoves = getAvailableMoves();
 		if (currentLegalMoves.isEmpty())
 		{
 			//Check if opponent also has no moves, then game is over
@@ -104,10 +111,13 @@ public class Board
 	}	
 	public boolean     move                 (Move move)
 	{
+		if (getStatus() != BoardStatus.INPROGRESS)
+			return false;
 		int x = move.getX();
 		int y = move.getY();
 		if (!isMoveLegal(x, y))
 			return false;
+		lastMove                    = move;
 		currentLegalMovesCalculated = false;
 		fieldCountsUpdated          = false;
 		statusCalculated            = false;
@@ -125,6 +135,8 @@ public class Board
 	}
 	public boolean     pass                 ()
 	{
+		if (getStatus() != BoardStatus.INPROGRESS)
+			return false;
 		currentLegalMoves = getAvailableMoves();
 		if (!currentLegalMoves.isEmpty())
 			return false;

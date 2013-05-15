@@ -29,7 +29,6 @@ public class H2DBUserDAO implements UserDAO {
 	 * @param u The User to save to the DB
 	 * @return true if the insert was successful, false otherwise
 	 */
-	@Override
 	public boolean insertUser(User u) {
 		boolean successful = false;
 		Connection conn = H2DBDAOFactory.createConnection();
@@ -83,7 +82,7 @@ public class H2DBUserDAO implements UserDAO {
 	 * @param userName The Name of the User to delete from the DB
 	 * @return true if the delete was successful, false otherwise
 	 */
-	@Override
+	
 	public boolean deleteUser(String userName) {
 		boolean successful = false;
 		Connection conn = H2DBDAOFactory.createConnection();
@@ -125,7 +124,7 @@ public class H2DBUserDAO implements UserDAO {
 	 * @param userName The Name of the User to search in DB
 	 * @return a User object if the User is present in DB, null otherwise
 	 */
-	@Override
+	
 	public User findUser(String userName) {
 		User u = null;
 		
@@ -169,7 +168,7 @@ public class H2DBUserDAO implements UserDAO {
 	 * @param u The new (already altered) User-object
 	 * @return true if the Update was successful, false otherwise
 	 */
-	@Override
+	
 	public boolean updateUser(User u) {
 		boolean successful = false;
 		Connection conn = H2DBDAOFactory.createConnection();
@@ -209,7 +208,7 @@ public class H2DBUserDAO implements UserDAO {
 	 * This method retrieves all Users from the DB
 	 * @return a List of User objects. If no user is in the DB the List is empty; never null
 	 */
-	@Override
+	
 	public List<User> getAllUsers() {
 		List<User> users = new ArrayList<User>();
 		

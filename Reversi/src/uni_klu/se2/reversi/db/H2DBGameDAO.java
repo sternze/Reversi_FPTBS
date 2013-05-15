@@ -30,7 +30,6 @@ public class H2DBGameDAO implements GameDAO {
 	 * @param whiteUser_Name The username of the white user
 	 * @return the newly assigned UUID of the Game
 	 */
-	@Override
 	public UUID createGame(String blackUser_Name, String whiteUser_Name) {
 		UUID gameID = UUID.randomUUID();
 		Connection conn = H2DBDAOFactory.createConnection();
@@ -88,7 +87,7 @@ public class H2DBGameDAO implements GameDAO {
 	 * @param gameID The ID of the Game in the DB
 	 * @return true if the Update was successful, otherwise false (e.g. the Game is not present)
 	 */
-	@Override
+	
 	public boolean setGameToFinished(UUID gameID) {
 		boolean successful = false;
 		Connection conn = H2DBDAOFactory.createConnection();
@@ -130,7 +129,7 @@ public class H2DBGameDAO implements GameDAO {
 	 * @param includeFinishedGames Indicator if all games should be selected, or just running games
 	 * @return a List of Game objects. If no Game is in the DB the List is empty; never null
 	 */
-	@Override
+	
 	public List<Game> getAllGames(boolean includeFinishedGames) {
 		List<Game> games = new ArrayList<Game>();
 		
@@ -187,7 +186,7 @@ public class H2DBGameDAO implements GameDAO {
 	 * @param includeFinishedGames Indicator if all games should be selected, or just running games
 	 * @return a List of Game objects. If no Game is in the DB the List is empty; never null
 	 */
-	@Override
+	
 	public List<Game> getGamesOfUser(String userName, boolean includeFinishedGames) {
 		List<Game> games = new ArrayList<Game>();
 		
@@ -249,7 +248,7 @@ public class H2DBGameDAO implements GameDAO {
 	 * @param GameID ID of the Game
 	 * @return a Game object if this query was successful, null otherwise (e.g. Game not present in DB)
 	 */
-	@Override
+	
 	public Game getGame(UUID GameID) {
 		Game game = null;
 		
@@ -299,12 +298,12 @@ public class H2DBGameDAO implements GameDAO {
 	 * @param g The new (already altered) Game-object
 	 * @return true if the Update was successful, false otherwise
 	 */
-	@Override
+	
 	public boolean updateGame(Game g) {
 		boolean successful = false;
 		Connection conn = H2DBDAOFactory.createConnection();
 		
-		if(conn != null) {
+		if(conn != null) { 
 			try {
 				PreparedStatement stmt = conn.prepareStatement("UPDATE GAME SET " +
 						"blackFields = ?, whiteFields = ?, finished = ?, blacksTurn = ? WHERE ID = ?");

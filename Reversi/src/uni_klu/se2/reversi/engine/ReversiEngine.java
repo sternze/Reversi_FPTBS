@@ -1,5 +1,6 @@
 package uni_klu.se2.reversi.engine;
 
+import uni_klu.se2.reversi.gui.IReversiGUI;
 import uni_klu.se2.reversi.gui.test;
 import uni_klu.se2.reversi.data.Board;
 import uni_klu.se2.reversi.data.BoardStatus;
@@ -16,7 +17,7 @@ public class ReversiEngine
 	private IPlayer player1;
 	private IPlayer player2;
 	private int     turn;
-	public test watcher;
+	public IReversiGUI watcher;
 	
 	
 	public ReversiEngine(Board board, IPlayer player1, IPlayer player2) {
@@ -33,9 +34,19 @@ public class ReversiEngine
 			board.pass();
 		else
 			board.move(move);
+		turn++;
+
+		if (board.getStatus() != BoardStatus.INPROGRESS)
+		{
+			
+			if (turn%2 == 0)
+				player1.signalLastMove();
+			else
+				player2.signalLastMove();
+		}
 		
 		watcher.paintBoard();
-		turn++;
+	
 		if (board.getStatus() != BoardStatus.INPROGRESS)
 			return;
 		

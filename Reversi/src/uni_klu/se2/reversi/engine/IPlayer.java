@@ -22,9 +22,11 @@ public abstract class IPlayer
 
 
 	public abstract void yourTurn();
+	public abstract void signalLastMove();
 	
 	public void signalEngine(boolean pass)
 	{
 		engine.onMoveReadyCalculated(nextMove, pass);
 	}
+	
 }
