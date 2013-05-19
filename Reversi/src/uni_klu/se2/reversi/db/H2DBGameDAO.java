@@ -25,7 +25,8 @@ public class H2DBGameDAO implements GameDAO {
 	public H2DBGameDAO() { }
 	
 	/**
-	 * This methods creates a game in the DB
+	 * This methods creates a game in the DB and if the user exist, it creates also an entry
+	 * in the playingGame Table
 	 * @param blackUser_Name The username of the black user
 	 * @param whiteUser_Name The username of the white user
 	 * @return the newly assigned UUID of the Game
@@ -33,6 +34,8 @@ public class H2DBGameDAO implements GameDAO {
 	public UUID createGame(String blackUser_Name, String whiteUser_Name) {
 		UUID gameID = UUID.randomUUID();
 		Connection conn = H2DBDAOFactory.createConnection();
+		boolean blackPlayerExists = false;
+		boolean whitePlayerExists = false;
 		
 		if(conn != null) {
 			try {
@@ -40,8 +43,8 @@ public class H2DBGameDAO implements GameDAO {
 						"?, ?, ?, ?, ?)");
 				
 				stmt.setString(1, gameID.toString());
-				stmt.setNull(2, java.sql.Types.ARRAY);
-				stmt.setNull(3, java.sql.Types.ARRAY);
+				stmt.setNull(2, java.sql.Types.NVARCHAR);
+				stmt.setNull(3, java.sql.Types.NVARCHAR);
 				stmt.setBoolean(4, false);
 				stmt.setBoolean(5, false);
 				
@@ -49,6 +52,51 @@ public class H2DBGameDAO implements GameDAO {
 				stmt.executeUpdate();
 				
 				stmt.close();
+				
+				if(blackUser_Name != null && !blackUser_Name.trim().isEmpty() &&
+						whiteUser_Name != null && !whiteUser_Name.trim().isEmpty()) {
+					
+					PreparedStatement blackUserQuery = conn.prepareStatement(
+							"SELECT * FROM User WHERE UserName = ?");
+					
+					blackUserQuery.setString(1, blackUser_Name);
+					
+					ResultSet rs = blackUserQuery.executeQuery();
+
+					if(rs.next()) {
+						blackPlayerExists = true;
+					}
+					
+					rs.close();
+					blackUserQuery.close();
+					
+					PreparedStatement whiteUserQuery = conn.prepareStatement(
+							"SELECT * FROM User WHERE UserName = ?");
+					
+					whiteUserQuery.setString(1, whiteUser_Name);
+					
+					ResultSet rsw = whiteUserQuery.executeQuery();
+
+					if(rsw.next()) {
+						whitePlayerExists = true;
+					}
+					
+					rsw.close();
+					whiteUserQuery.close();
+
+					if(blackPlayerExists && whitePlayerExists) {
+						PreparedStatement mappingInsert = conn.prepareStatement(
+								"INSERT INTO playingGame VALUES(?,?,?)");
+						
+						mappingInsert.setString(1, blackUser_Name);
+						mappingInsert.setString(2, whiteUser_Name);
+						mappingInsert.setString(3, gameID.toString());
+						
+						mappingInsert.executeUpdate();
+						
+						mappingInsert.close();
+					}
+				}
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
@@ -257,7 +305,7 @@ public class H2DBGameDAO implements GameDAO {
 		if(conn != null) {
 			try {
 				String selectString = "SELECT ID, blackFields, whiteFields, finished, blacksTurn FROM GAME" +
-						"WHERE ID = ?";
+						" WHERE ID = ?";
 				
 
 				PreparedStatement stmt = conn.prepareStatement(selectString);

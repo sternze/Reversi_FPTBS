@@ -125,7 +125,7 @@ public class H2DBUserDAO implements UserDAO {
 	 * @return a User object if the User is present in DB, null otherwise
 	 */
 	
-	public User findUser(String userName) {
+	public User getUser(String userName) {
 		User u = null;
 		
 		Connection conn = H2DBDAOFactory.createConnection();

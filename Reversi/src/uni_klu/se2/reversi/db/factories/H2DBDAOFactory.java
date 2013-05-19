@@ -54,14 +54,16 @@ public class H2DBDAOFactory extends DAOFactory {
 	@Override
 	public boolean createDatabase() {
 		boolean created = true;
+		System.out.println("-------------------- DB Creation Started --------------------");
 		try {
 			Connection conn = createConnection();
+			conn.commit();
 			PreparedStatement prepstmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS USER(" +
 					"UserName varchar(255) primary key not null, " + 
 					"Password varchar(255) not null)");
 			
 			if(!prepstmt.execute()) {
-				if(prepstmt.getUpdateCount() > 0) {
+				if(prepstmt.getUpdateCount() == 0) {
 					System.out.println("Table USER created");
 				} else {
 					System.out.println("Table USER already exists");
@@ -78,7 +80,7 @@ public class H2DBDAOFactory extends DAOFactory {
 					"blacksTurn BOOLEAN)");
 			
 			if(!prepstmt.execute()) {
-				if(prepstmt.getUpdateCount() > 0) {
+				if(prepstmt.getUpdateCount() == 0) {
 					System.out.println("Table GAME created");
 				} else {
 					System.out.println("Table GAME already exists");
@@ -97,31 +99,35 @@ public class H2DBDAOFactory extends DAOFactory {
 					"FOREIGN KEY(GameID) REFERENCES GAME(ID))");
 			
 			if(!prepstmt.execute()) {
-				if(prepstmt.getUpdateCount() > 0) {
+				if(prepstmt.getUpdateCount() == 0) {
 					System.out.println("Table PlayingGame created");
 				} else {
 					System.out.println("Table PlayingGame already exists");
 				}
 			}
 			prepstmt.close();
+			conn.commit();
 			
 		} catch(Exception ex) {
 			created = false;
 			System.out.println(ex.toString());
 		}
+
+		System.out.println("-------------------- DB Creation Finished -------------------");
 		return created;
 	}
 
 	@Override
 	public boolean recreateDatabase() {
 		boolean deleted = true;
-		
+		System.out.println("==================== DB Re-Creation Started ====================");
 		try {
 			Connection conn = createConnection();
+			conn.commit();
 			PreparedStatement prepstmt = conn.prepareStatement("DROP TABLE PlayingGame");
 			
 			if(!prepstmt.execute()) {
-				if(prepstmt.getUpdateCount() > 0) {
+				if(prepstmt.getUpdateCount() == 0) {
 					System.out.println("Table PlayingGame dropped");
 				} else {
 					System.out.println("Table PlayingGame does not exists");
@@ -132,7 +138,7 @@ public class H2DBDAOFactory extends DAOFactory {
 			prepstmt = conn.prepareStatement("DROP TABLE GAME");
 			
 			if(!prepstmt.execute()) {
-				if(prepstmt.getUpdateCount() > 0) {
+				if(prepstmt.getUpdateCount() == 0) {
 					System.out.println("Table GAME dropped");
 				} else {
 					System.out.println("Table GAME does not exists");
@@ -144,7 +150,7 @@ public class H2DBDAOFactory extends DAOFactory {
 			prepstmt = conn.prepareStatement("DROP TABLE USER");
 			
 			if(!prepstmt.execute()) {
-				if(prepstmt.getUpdateCount() > 0) {
+				if(prepstmt.getUpdateCount() == 0) {
 					System.out.println("Table USER dropped");
 				} else {
 					System.out.println("Table USER does not exists");
@@ -153,12 +159,17 @@ public class H2DBDAOFactory extends DAOFactory {
 			
 			prepstmt.close();
 			
+			conn.commit();
+			
 		} catch(Exception ex) {
 			deleted = false;
 			System.out.println(ex.toString());
 		}
 		
-		return deleted && createDatabase();
+		boolean created = createDatabase();
+
+		System.out.println("==================== DB Re-Creation Finished ===================");
+		return deleted && created;
 	}
 
 }

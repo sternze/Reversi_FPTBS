@@ -5,13 +5,11 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 
 import uni_klu.se2.reversi.data.*;
