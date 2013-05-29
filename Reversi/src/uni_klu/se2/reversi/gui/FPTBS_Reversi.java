@@ -32,9 +32,11 @@ public class FPTBS_Reversi extends Application implements IReversiGUI {
 		Parent root = (Parent) fxmlLoader.load();
 		
 		controller = (ReversiGUIController)fxmlLoader.getController();
-		controller.initBoard();
+		controller.initGUI();
 		
 		primaryStage.setTitle("Reversi");
+		primaryStage.setMinHeight(675);
+		primaryStage.setMinWidth(1000);
 		primaryStage.setScene(new Scene(root, 1000, 630));
 		primaryStage.show();
 	}
