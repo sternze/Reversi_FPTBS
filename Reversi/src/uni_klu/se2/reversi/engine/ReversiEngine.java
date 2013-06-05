@@ -29,6 +29,8 @@ public class ReversiEngine
 
 	public void onMoveReadyCalculated(Move move, boolean pass)
 	{
+		System.out.println("onMoveReadyCalculated (" + move.getX() + "," + move.getY() + ")");
+		
 		if (pass)
 			board.pass();
 		else

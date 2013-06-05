@@ -584,4 +584,9 @@ public class test extends IPlayer implements IReversiGUI {
 		
 	}
 
+	public void paintBoard(Move move) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

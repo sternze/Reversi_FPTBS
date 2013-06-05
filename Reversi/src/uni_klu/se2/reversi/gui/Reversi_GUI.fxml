@@ -89,7 +89,7 @@
                 </GridPane>
               </bottom>
               <center>
-                <GridPane id="G_Board" fx:id="board" styleClass="G_Board">
+                <GridPane id="G_Board" fx:id="gameBoard" styleClass="G_Board">
                   <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -204,9 +204,17 @@
                       <children>
                         <AnchorPane prefHeight="300.0" prefWidth="400.0">
                           <children>
-                            <GridPane prefHeight="200.0" prefWidth="400.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                            <GridPane prefHeight="300.0" prefWidth="400.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                               <children>
-                                <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                  <children>
+                                    <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+                                      <children>
+                                        <Button fx:id="bNewGame" mnemonicParsing="false" onAction="#newGame" text="New Game" />
+                                      </children>
+                                    </FlowPane>
+                                  </children>
+                                </VBox>
                                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                                 <FlowPane alignment="CENTER" columnHalignment="LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
                                   <children>

@@ -7,19 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import uni_klu.se2.reversi.helper.SocketHelperNotification;
 
-public class FPTBS_Reversi extends Application implements IReversiGUI {
+public class FPTBS_Reversi extends Application {
 
 	private ReversiGUIController controller;
-	
-	public void paintBoard() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void socketHelperNotification(SocketHelperNotification notfication) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public static void main(String[] args) {
 	    launch(args);

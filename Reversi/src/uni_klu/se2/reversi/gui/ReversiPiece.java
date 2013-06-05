@@ -1,5 +1,7 @@
 package uni_klu.se2.reversi.gui;
 
+import java.security.acl.Owner;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.TimelineBuilder;
@@ -11,11 +13,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.effect.Reflection;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
-import uni_klu.se2.reversi.gui.ReversiModel.Owner;
+import uni_klu.se2.reversi.data.FieldStatus;
 
 public class ReversiPiece extends Region {
 
-	private ObjectProperty<Owner> ownerProperty = new SimpleObjectProperty<Owner>(this, "owner", Owner.NONE);
+	private ObjectProperty<FieldStatus> ownerProperty = new SimpleObjectProperty<FieldStatus>(this, "owner", FieldStatus.EMPTY);
 	
 	private DoubleProperty translateZ = new SimpleDoubleProperty();
     private DoubleProperty angle = new SimpleDoubleProperty();
@@ -24,9 +26,9 @@ public class ReversiPiece extends Region {
 	public ReversiPiece() {
 		  this.getStyleClass().add("revercie-piece");
 		  
-		  styleProperty().bind(Bindings.when(ownerProperty.isEqualTo(Owner.NONE))
+		  styleProperty().bind(Bindings.when(ownerProperty.isEqualTo(FieldStatus.EMPTY))
 		    .then("radius 0")
-		    .otherwise(Bindings.when(ownerProperty.isEqualTo(Owner.WHITE))
+		    .otherwise(Bindings.when(ownerProperty.isEqualTo(FieldStatus.WHITE))
 		      .then("-fx-background-color: radial-gradient(radius 100%, white .4, gray .9, darkgray 1)")
 		      .otherwise("-fx-background-color: radial-gradient(radius 100%, white 0, black .6)"))
 		    .concat("; -fx-background-radius: 1000em; -fx-background-insets: 5;"));
@@ -68,20 +70,20 @@ public class ReversiPiece extends Region {
             .build().play();
     }
 	
-	public ReversiPiece(Owner owner) {
+	public ReversiPiece(FieldStatus owner) {
 		  this();
 		  ownerProperty.setValue(owner);
 		}
 	
-	public ObjectProperty<Owner> ownerProperty() {
+	public ObjectProperty<FieldStatus> ownerProperty() {
 		return ownerProperty;
 	}
 	
-	public Owner getOwner() {
+	public FieldStatus getOwner() {
 		return ownerProperty.get();
 	} 
 	
-	public void setOwner(Owner owner) {
+	public void setOwner(FieldStatus owner) {
 	    ownerProperty.set(owner);
 	  }
 }

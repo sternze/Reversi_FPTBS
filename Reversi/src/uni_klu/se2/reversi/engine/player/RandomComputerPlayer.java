@@ -56,6 +56,7 @@ public class RandomComputerPlayer extends IPlayer
 	@Override
 	public void yourTurn() 
 	{
+		System.out.println("RandomComputerPlayer's turn");
 		BackgroundCalculator bc = new BackgroundCalculator(board, engine);
 		bc.execute();
 	}
