@@ -236,11 +236,11 @@ public class test extends IPlayer implements IReversiGUI {
 				btnNewButton.setOpaque(true);
 				btnNewButton.setBounds(35 + i * 80, 35 + j * 80, 75, 75);
 				btnNewButton.setEnabled(false);
-				if (fields[i][j].getStatus() == FieldStatus.BLACK)
+				if (fields[i][j].getStatus().getValue() == FieldStatus.BLACK)
 				{
 					btnNewButton.setBackground(black);
 				}
-				if (fields[i][j].getStatus() == FieldStatus.WHITE)
+				if (fields[i][j].getStatus().getValue() == FieldStatus.WHITE)
 				{
 					btnNewButton.setBackground(white);
 				}
@@ -260,11 +260,11 @@ public class test extends IPlayer implements IReversiGUI {
 								JButton current = buttons[i][j];
 								current.setEnabled(false);
 								current.setBackground(Color.GRAY);
-								if (fieldss[i][j].getStatus() == FieldStatus.BLACK)
+								if (fieldss[i][j].getStatus().getValue() == FieldStatus.BLACK)
 								{
 									current.setBackground(black);
 								}
-								if (fieldss[i][j].getStatus() == FieldStatus.WHITE)
+								if (fieldss[i][j].getStatus().getValue() == FieldStatus.WHITE)
 								{
 									current.setBackground(white);
 								}
@@ -320,11 +320,11 @@ public class test extends IPlayer implements IReversiGUI {
 				JButton current = buttons[i][j];
 				current.setEnabled(false);
 				current.setBackground(Color.GRAY);
-				if (fieldss[i][j].getStatus() == FieldStatus.BLACK)
+				if (fieldss[i][j].getStatus().getValue() == FieldStatus.BLACK)
 				{
 					current.setBackground(black);
 				}
-				if (fieldss[i][j].getStatus() == FieldStatus.WHITE)
+				if (fieldss[i][j].getStatus().getValue() == FieldStatus.WHITE)
 				{
 					current.setBackground(white);
 				}
@@ -364,11 +364,11 @@ public class test extends IPlayer implements IReversiGUI {
 				JButton current = buttons[i][j];
 				current.setEnabled(false);
 				current.setBackground(Color.GRAY);
-				if (fieldss[i][j].getStatus() == FieldStatus.BLACK)
+				if (fieldss[i][j].getStatus().getValue() == FieldStatus.BLACK)
 				{
 					current.setBackground(black);
 				}
-				if (fieldss[i][j].getStatus() == FieldStatus.WHITE)
+				if (fieldss[i][j].getStatus().getValue() == FieldStatus.WHITE)
 				{
 					current.setBackground(white);
 				}
@@ -583,10 +583,4 @@ public class test extends IPlayer implements IReversiGUI {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void paintBoard(Move move) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

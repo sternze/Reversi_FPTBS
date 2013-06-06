@@ -17,7 +17,7 @@ public class FPTBS_Reversi extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Reversi_GUI.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Reversi_GUI/Reversi_GUI.fxml"));
 		
 		Parent root = (Parent) fxmlLoader.load();
 		

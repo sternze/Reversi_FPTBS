@@ -20,17 +20,16 @@ public class ReversiPiece extends Region {
 	private ObjectProperty<FieldStatus> ownerProperty = new SimpleObjectProperty<FieldStatus>(this, "owner", FieldStatus.EMPTY);
 	
 	private DoubleProperty translateZ = new SimpleDoubleProperty();
-    private DoubleProperty angle = new SimpleDoubleProperty();
-	private final Region me;
+    private DoubleProperty angle = new SimpleDoubleProperty(); 
     
 	public ReversiPiece() {
 		  this.getStyleClass().add("revercie-piece");
 		  
-		  styleProperty().bind(Bindings.when(ownerProperty.isEqualTo(FieldStatus.EMPTY))
-		    .then("radius 0")
+		  styleProperty().bind(Bindings.when(ownerProperty.isEqualTo(FieldStatus.BLACK))
+		    .then("-fx-background-color: radial-gradient(radius 100%, white 0, black .6)")
 		    .otherwise(Bindings.when(ownerProperty.isEqualTo(FieldStatus.WHITE))
 		      .then("-fx-background-color: radial-gradient(radius 100%, white .4, gray .9, darkgray 1)")
-		      .otherwise("-fx-background-color: radial-gradient(radius 100%, white 0, black .6)"))
+		      .otherwise("-fx-radius 0"))
 		    .concat("; -fx-background-radius: 1000em; -fx-background-insets: 5;"));
 		  Reflection reflection = new Reflection();
 		  reflection.setFraction(1);
@@ -39,7 +38,6 @@ public class ReversiPiece extends Region {
 		  setPrefSize(180, 180);
 		  setMouseTransparent(true);
 		  this.translateZProperty().bind(translateZ);
-	      me = this;
 	      /*
 	        ownerProperty.addListener(new ChangeListener() {
 	        	@Override 
@@ -69,11 +67,6 @@ public class ReversiPiece extends Region {
             )
             .build().play();
     }
-	
-	public ReversiPiece(FieldStatus owner) {
-		  this();
-		  ownerProperty.setValue(owner);
-		}
 	
 	public ObjectProperty<FieldStatus> ownerProperty() {
 		return ownerProperty;

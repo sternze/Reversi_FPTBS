@@ -1,35 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import java.util.*?>
-<?import javafx.collections.*?>
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml" fx:controller="uni_klu.se2.reversi.gui.ReversiGUIController">
+<VBox fx:id="mainView" prefHeight="400.0" prefWidth="640.0" xmlns:fx="http://javafx.com/fxml" fx:controller="uni_klu.se2.reversi.gui.ReversiGUIController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" text="File">
+        <Menu id="" mnemonicParsing="false" text="New Game">
           <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
+            <MenuItem mnemonicParsing="false" onAction="#newGame" text="New Game" />
+            <MenuItem mnemonicParsing="false" onAction="#loadGame" text="Load Game" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
+        <Menu mnemonicParsing="false" text="Statistics" />
+        <Menu mnemonicParsing="false" text="Settings">
           <items>
             <MenuItem mnemonicParsing="false" text="Undo" />
             <MenuItem mnemonicParsing="false" text="Redo" />
@@ -41,11 +31,6 @@
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" text="Select All" />
             <MenuItem mnemonicParsing="false" text="Unselect All" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
           </items>
         </Menu>
       </menus>
@@ -89,7 +74,7 @@
                 </GridPane>
               </bottom>
               <center>
-                <GridPane id="G_Board" fx:id="board" styleClass="G_Board">
+                <GridPane id="G_Board" fx:id="gameBoard" styleClass="G_Board">
                   <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -208,46 +193,12 @@
                               <children>
                                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                                   <children>
-                                    <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
-                                      <children>
-                                        <Button fx:id="bNewGame" mnemonicParsing="false" onAction="#newGame" text="New Game" />
-                                      </children>
-                                    </FlowPane>
+                                    <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" />
                                   </children>
                                 </VBox>
                                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                <FlowPane alignment="CENTER" columnHalignment="LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                                  <children>
-                                    <Label text="Black">
-                                      <FlowPane.margin>
-                                        <Insets bottom="10.0" fx:id="x2" />
-                                      </FlowPane.margin>
-                                    </Label>
-                                    <ComboBox fx:id="EngineWhite" prefWidth="186.0">
-                                      <items>
-                                        <FXCollections fx:factory="observableArrayList">
-                                          <String fx:value="Item 1" />
-                                          <String fx:value="Item 2" />
-                                          <String fx:value="Item 3" />
-                                        </FXCollections>
-                                      </items>
-                                    </ComboBox>
-                                  </children>
-                                </FlowPane>
-                                <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                  <children>
-                                    <Label text="White" FlowPane.margin="$x2" />
-                                    <ComboBox fx:id="EngineBlack" prefWidth="186.0">
-                                      <items>
-                                        <FXCollections fx:factory="observableArrayList">
-                                          <String fx:value="Item 1" />
-                                          <String fx:value="Item 2" />
-                                          <String fx:value="Item 3" />
-                                        </FXCollections>
-                                      </items>
-                                    </ComboBox>
-                                  </children>
-                                </FlowPane>
+                                <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <FlowPane alignment="CENTER" columnHalignment="LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                               </children>
                               <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -270,7 +221,7 @@
                                   <children>
                                     <Label fx:id="ScoreBlack" text="Black">
                                       <font>
-                                        <Font name="System Bold" size="60.0" fx:id="x3" />
+                                        <Font name="System Bold" size="60.0" fx:id="x2" />
                                       </font>
                                     </Label>
                                   </children>
@@ -286,7 +237,7 @@
                               <children>
                                 <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="0.0" prefHeight="90.0" prefWidth="275.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                   <children>
-                                    <Label fx:id="ScoreWhite" font="$x3" text="White" />
+                                    <Label fx:id="ScoreWhite" font="$x2" text="White" />
                                   </children>
                                 </FlowPane>
                               </children>
@@ -303,5 +254,9 @@
         </HBox>
       </children>
     </AnchorPane>
+    <AnchorPane prefHeight="200.0" prefWidth="200.0" />
   </children>
+  <stylesheets>
+    <URL value="@Reversi_GUI.css" />
+  </stylesheets>
 </VBox>

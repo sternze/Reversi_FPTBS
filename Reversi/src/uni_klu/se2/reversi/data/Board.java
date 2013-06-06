@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.beans.property.SimpleObjectProperty;
+
 /**
  * This class encapsulates the Logic for controlling the whole Board. It will
  * hold the state of the game and take moves from players. For every new game
@@ -50,7 +52,7 @@ public class Board {
 		for (int i = 0; i < BOARDSIZE; i++)
 			for (int j = 0; j < BOARDSIZE; j++) {
 				this.fields[i][j] = new Field(i, j);
-				this.fields[i][j].setStatus(fields[i][j].getStatus());
+				this.fields[i][j].setStatus(new SimpleObjectProperty<FieldStatus>(fields[i][j].getStatus().getValue()));
 			}
 		this.currentPlayer = currentPlayer;
 		currentLegalMovesCalculated = false;
@@ -162,8 +164,9 @@ public class Board {
 		for (int i = 0; i < BOARDSIZE; i++)
 			for (int j = 0; j < BOARDSIZE; j++)
 				if (isFieldLegal(this.fields[i][j], currentPlayer)) {
-					currentLegalMoves.add(new Move(this.fields[i][j].getX(),
-							this.fields[i][j].getY()));
+					currentLegalMoves.add(new Move(this.fields[i][j].getX(), this.fields[i][j].getY()));
+				} else if (this.fields[i][j].getStatus().getValue() == FieldStatus.LEGAL) {
+					this.fields[i][j].getStatus().setValue(FieldStatus.EMPTY);
 				}
 		return currentLegalMoves;
 	}
@@ -182,7 +185,7 @@ public class Board {
 	}
 
 	private boolean isFieldLegal(Field field, FieldStatus playerOnTheMove) {
-		if (field.getStatus() != FieldStatus.EMPTY)
+		if (field.getStatus().getValue() != FieldStatus.EMPTY)
 			return false;
 
 		int posX = field.getX();
@@ -205,20 +208,20 @@ public class Board {
 							break;
 						}
 						// if field is empty abort
-						if (fields[searchX][searchY].getStatus() == FieldStatus.EMPTY) {
+						if (fields[searchX][searchY].getStatus().getValue() == FieldStatus.EMPTY) {
 							abortSearch = true;
 							break;
 						}
 						// if field is next and has same color
 						if ((depth == 1)
-								&& (fields[searchX][searchY].getStatus() == playerOnTheMove)) {
+								&& (fields[searchX][searchY].getStatus().getValue() == playerOnTheMove)) {
 							abortSearch = true;
 							break;
 						}
 						// if field is further than next and has same color:
 						// success!
 						if ((depth > 1)
-								&& (fields[searchX][searchY].getStatus() == playerOnTheMove)) {
+								&& (fields[searchX][searchY].getStatus().getValue() == playerOnTheMove)) {
 							return true;
 						}
 						depth++;
@@ -265,20 +268,20 @@ public class Board {
 							break;
 						}
 						// if field is empty abort
-						if (fields[searchX][searchY].getStatus() == FieldStatus.EMPTY) {
+						if (fields[searchX][searchY].getStatus().getValue() == FieldStatus.EMPTY) {
 							abortSearch = true;
 							break;
 						}
 						// if field is next and has same color
 						if ((depth == 1)
-								&& (fields[searchX][searchY].getStatus() == currentPlayer)) {
+								&& (fields[searchX][searchY].getStatus().getValue() == currentPlayer)) {
 							abortSearch = true;
 							break;
 						}
 						// if field is further than next and has same color:
 						// success!
 						if ((depth > 1)
-								&& (fields[searchX][searchY].getStatus() == currentPlayer)) {
+								&& (fields[searchX][searchY].getStatus().getValue() == currentPlayer)) {
 							abortSearch = true;
 							flipFields = true;
 							break;
@@ -305,9 +308,9 @@ public class Board {
 		this.whiteFieldsOnBoard = 0;
 		for (int i = 0; i < BOARDSIZE; i++)
 			for (int j = 0; j < BOARDSIZE; j++)
-				if (this.fields[i][j].getStatus() == FieldStatus.BLACK)
+				if (this.fields[i][j].getStatus().getValue() == FieldStatus.BLACK)
 					this.blackFieldsOnBoard++;
-				else if (this.fields[i][j].getStatus() == FieldStatus.WHITE)
+				else if (this.fields[i][j].getStatus().getValue() == FieldStatus.WHITE)
 					this.whiteFieldsOnBoard++;
 	}
 }

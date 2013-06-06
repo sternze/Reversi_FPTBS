@@ -3,6 +3,8 @@ package uni_klu.se2.reversi.gui;
 import javafx.animation.FadeTransition;
 import javafx.animation.FadeTransitionBuilder;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -12,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.RegionBuilder;
 import javafx.util.Duration;
+import uni_klu.se2.reversi.data.FieldStatus;
 import uni_klu.se2.reversi.data.Move;
 
 public class ReversiSquare extends Region {
@@ -28,7 +31,7 @@ public class ReversiSquare extends Region {
 	public ReversiSquare(final int x, final int y, final ReversiModel model) {
 		this.model = model;
 
-		styleProperty().bind(Bindings.when(model.legalMove(x, y))
+		styleProperty().bind(Bindings.when(model.getBoard().getFields()[x][y].getStatus().isEqualTo(FieldStatus.LEGAL))
 									 .then("-fx-background-color: derive(dodgerblue, -60%)")
 									 .otherwise("-fx-background-color: #177B0C"));
 

@@ -7,5 +7,5 @@ package uni_klu.se2.reversi.data;
  */
 public enum FieldStatus 
 {
-	EMPTY, BLACK, WHITE
+	EMPTY, BLACK, WHITE, LEGAL
 }
