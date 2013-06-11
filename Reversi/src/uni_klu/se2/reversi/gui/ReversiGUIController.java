@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import uni_klu.se2.reversi.data.Board;
+import uni_klu.se2.reversi.data.BoardStatus;
 import uni_klu.se2.reversi.data.FieldStatus;
 import uni_klu.se2.reversi.engine.IPlayer;
 import uni_klu.se2.reversi.engine.ReversiEngine;
@@ -58,7 +59,6 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public void initGUI() {
@@ -108,7 +108,7 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 		
 		clearGUI();
 		initBoard();
-		initScore();
+		//initScore();
 		
 		IPlayer Pwhite = null;
 		IPlayer Pblack = null;
@@ -174,7 +174,7 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 				break;
 		}
 		
-		switch(3)
+		switch(0)
 		{
 			case 0:
 				Pblack = model; 
@@ -234,6 +234,7 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 				break;
 		}
 		
+		//initBoard();
 		engine = new ReversiEngine(board, Pwhite, Pblack);
 		Pwhite.setEngine(engine);
 		Pblack.setEngine(engine);
@@ -268,7 +269,18 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 	
 	public void paintBoard() {
 		System.out.println("paint board");
-		model.matchBoards();
+		if (board.getStatus() == BoardStatus.BLACKWON) {
+			System.out.println("black won");
+			newGame(new ActionEvent());
+		} else if (board.getStatus() == BoardStatus.WHITEWON) {
+			System.out.println("white won");
+			newGame(new ActionEvent());
+		} else if (board.getStatus() == BoardStatus.DRAW) {
+			System.out.println("draw");
+			newGame(new ActionEvent());
+		} else {
+			model.checkLegalMoves();
+		}
 	}
 	
 	public void socketHelperNotification(SocketHelperNotification notfication) {

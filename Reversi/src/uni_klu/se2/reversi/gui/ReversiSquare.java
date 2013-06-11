@@ -3,8 +3,6 @@ package uni_klu.se2.reversi.gui;
 import javafx.animation.FadeTransition;
 import javafx.animation.FadeTransitionBuilder;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -45,10 +43,11 @@ public class ReversiSquare extends Region {
 				new EventHandler<MouseEvent>() {
 					public void handle(MouseEvent t) {
 						System.out.println("clicked(" + x + "," + y + ")");
-						model.play(new Move(x, y));
-						highlightTransition.setRate(1000);
-						highlightTransition.play();
-
+						if (model.getMyTurn()) {
+							model.play(new Move(x, y));
+							highlightTransition.setRate(1000);
+							highlightTransition.play();
+						}
 					}
 				});
 	}

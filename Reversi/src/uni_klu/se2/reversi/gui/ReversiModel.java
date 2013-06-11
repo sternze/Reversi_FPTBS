@@ -10,6 +10,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import uni_klu.se2.reversi.data.Board;
+import uni_klu.se2.reversi.data.Field;
 import uni_klu.se2.reversi.data.FieldStatus;
 import uni_klu.se2.reversi.data.Move;
 import uni_klu.se2.reversi.engine.IPlayer;
@@ -19,9 +20,12 @@ public class ReversiModel extends IPlayer {
 	
 	public ObjectProperty<FieldStatus> turn = new SimpleObjectProperty<FieldStatus>(FieldStatus.BLACK);
 	
+	private boolean myTurn = false;
+	
 	public ReversiModel(Board myBoard) {
 		super(myBoard);
 		board = myBoard;
+		checkLegalMoves();
 	}
 	
 	public Board getBoard() {
@@ -46,6 +50,7 @@ public class ReversiModel extends IPlayer {
 	} 
 	
 	public void checkLegalMoves() {
+		System.out.println("checklegalmoves");
 		List<Move> legalMoves = board.getAvailableMoves();
 		Iterator<Move> iterator = legalMoves.iterator();
 		while(iterator.hasNext())
@@ -55,23 +60,28 @@ public class ReversiModel extends IPlayer {
 		}
 	}
 	
-	public void matchBoards() {
-		//checkLegalMoves();
-	}
-	
 	public void play(Move move) {
 		System.out.println("play (" + move.getX() + ", " + move.getY() + "): " + board.isMoveLegal(move.getX(), move.getY()));
-		engine.onMoveReadyCalculated(move, false);
+		if (board.isMoveLegal(move.getX(), move.getY())) {
+			myTurn = false;
+			engine.onMoveReadyCalculated(move, false);
+		}
 	}
 	
 	@Override
 	public void yourTurn() {
-		checkLegalMoves();
+		myTurn = true;
 	}
 
 	@Override
 	public void signalLastMove() {
-		// TODO Auto-generated method stub
-		
+	}
+	
+	public boolean getMyTurn() {
+		return this.myTurn;
+	}
+	
+	public void setMyTurn(boolean myTurn) {
+		this.myTurn = myTurn;
 	}
 }

@@ -157,17 +157,32 @@ public class Board {
 	}
 
 	public List<Move> getAvailableMoves() {
+		
+		for (int i = 0; i < BOARDSIZE; i++) {
+			String s = "";
+			for (int j = 0; j < BOARDSIZE; j++) {
+				s += this.getFields()[j][i].getStatus().getValue().toString() + " ";
+			}
+			System.out.println(s);
+		}
+		
+		System.out.println("\n");
+		
 		if (currentLegalMovesCalculated)
 			return currentLegalMoves;
 		currentLegalMovesCalculated = true;
 		currentLegalMoves = new ArrayList<Move>();
 		for (int i = 0; i < BOARDSIZE; i++)
-			for (int j = 0; j < BOARDSIZE; j++)
+			for (int j = 0; j < BOARDSIZE; j++) {
 				if (isFieldLegal(this.fields[i][j], currentPlayer)) {
 					currentLegalMoves.add(new Move(this.fields[i][j].getX(), this.fields[i][j].getY()));
-				} else if (this.fields[i][j].getStatus().getValue() == FieldStatus.LEGAL) {
-					this.fields[i][j].getStatus().setValue(FieldStatus.EMPTY);
+				} else {
+					FieldStatus status = this.fields[i][j].getStatus().getValue();
+					if (status.equals(FieldStatus.LEGAL)) {
+						this.fields[i][j].getStatus().setValue(FieldStatus.EMPTY);
+					}
 				}
+			}
 		return currentLegalMoves;
 	}
 
