@@ -1,0 +1,15 @@
+#JSGF V1.0;
+
+/**
+ * JSGF Grammar for Hello World example
+ */
+
+grammar LetterGrammar;
+
+public <input> = (<letters> <numbers>);
+<numbers> = ( One | Two | Three | Four | Five | Six | Seven | Eight);
+<letters> = (A | B | C | D | E | F | G | H);
+
+
+ 
+
