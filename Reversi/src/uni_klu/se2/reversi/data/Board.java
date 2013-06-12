@@ -3,10 +3,6 @@ package uni_klu.se2.reversi.data;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
-
-import uni_klu.se2.reversi.db.factories.DAOFactory;
-import uni_klu.se2.reversi.db.interfaces.GameDAO;
 
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -29,10 +25,9 @@ public class Board {
 	private int whiteFieldsOnBoard;
 	private int blackFieldsOnBoard;
 	private boolean fieldCountsUpdated;
-	private final int BOARDSIZE = 8;
 	private Move lastMove;
-	private UUID gameGuid;
-	private final String DB_FIELD_SEPERATOR = ";";
+	
+	public final int BOARDSIZE = 8;
 
 	public Move getLastMove() {
 		return lastMove;
@@ -131,9 +126,6 @@ public class Board {
 			fields[x][y].setBlack();
 			currentPlayer = FieldStatus.WHITE;
 		}
-
-		updateGameInDB();
-		
 		return true;
 	}
 
@@ -166,65 +158,20 @@ public class Board {
 	}
 
 	public List<Move> getAvailableMoves() {
-		
-		for (int i = 0; i < BOARDSIZE; i++) {
-			String s = "";
-			for (int j = 0; j < BOARDSIZE; j++) {
-				s += this.getFields()[j][i].getStatus().getValue().toString() + " ";
-			}
-			System.out.println(s);
-		}
-		
-		System.out.println("\n");
-		
+		System.out.println("getAvailableMoves");
 		if (currentLegalMovesCalculated)
 			return currentLegalMoves;
 		currentLegalMovesCalculated = true;
 		currentLegalMoves = new ArrayList<Move>();
-		for (int i = 0; i < BOARDSIZE; i++)
-			for (int j = 0; j < BOARDSIZE; j++) {
+		for (int i = 0; i < BOARDSIZE; i++) {
+			for (int j = 0; j < BOARDSIZE; j++) {				
 				if (isFieldLegal(this.fields[i][j], currentPlayer)) {
-					currentLegalMoves.add(new Move(this.fields[i][j].getX(), this.fields[i][j].getY()));
-				} else {
-					FieldStatus status = this.fields[i][j].getStatus().getValue();
-					if (status.equals(FieldStatus.LEGAL)) {
-						this.fields[i][j].getStatus().setValue(FieldStatus.EMPTY);
-					}
+					currentLegalMoves.add(new Move(this.fields[i][j].getX(),
+							this.fields[i][j].getY()));
 				}
 			}
+		}
 		return currentLegalMoves;
-	}
-	
-
-	private void updateGameInDB() {
-		// create the required DAO Factory
-		DAOFactory h2DBFactory = DAOFactory.getDAOFactory(DAOFactory.H2DB);
-
-		// Create a DAO
-		GameDAO myGame = h2DBFactory.getGameDAO();
-		
-		Game g = myGame.getGame(gameGuid);
-		if(g != null) {
-			g.setBlackFields(getFieldsForDB(FieldStatus.BLACK));
-			g.setWhiteFields(getFieldsForDB(FieldStatus.WHITE));
-			g.setBlacksTurn(currentPlayer == FieldStatus.BLACK ? true : false);
-			
-			myGame.updateGame(g);
-		}
-	}
-
-	private String getFieldsForDB(FieldStatus colorNeeded) {
-		String accordingFields = "";
-		
-		for(int i = 0; i < BOARDSIZE; i++) {
-			for(int j = 0; j < BOARDSIZE; j++) {
-				if(fields[i][j].getStatus().get() == colorNeeded) {
-					accordingFields += i + "_" + j + DB_FIELD_SEPERATOR;
-				}
-			}
-		}
-		
-		return accordingFields;
 	}
 
 	public FieldStatus getCurrentPlayer() {
@@ -249,7 +196,7 @@ public class Board {
 		// check all directions
 		for (int x = -1; x <= 1; x++)
 			for (int y = -1; y <= 1; y++) {
-				if (!((x == 0) && (y == 0))) {
+				if (!((x == 0) && (y == 0))) { // feld selbst
 					boolean abortSearch = false;
 					int depth = 1;
 					// check along this direction
@@ -269,15 +216,13 @@ public class Board {
 							break;
 						}
 						// if field is next and has same color
-						if ((depth == 1)
-								&& (fields[searchX][searchY].getStatus().getValue() == playerOnTheMove)) {
+						if ((depth == 1) && (fields[searchX][searchY].getStatus().getValue() == playerOnTheMove)) {
 							abortSearch = true;
 							break;
 						}
 						// if field is further than next and has same color:
 						// success!
-						if ((depth > 1)
-								&& (fields[searchX][searchY].getStatus().getValue() == playerOnTheMove)) {
+						if ((depth > 1) && (fields[searchX][searchY].getStatus().getValue() == playerOnTheMove)) {
 							return true;
 						}
 						depth++;
@@ -330,14 +275,16 @@ public class Board {
 						}
 						// if field is next and has same color
 						if ((depth == 1)
-								&& (fields[searchX][searchY].getStatus().getValue() == currentPlayer)) {
+								&& (fields[searchX][searchY].getStatus()
+										.getValue() == currentPlayer)) {
 							abortSearch = true;
 							break;
 						}
 						// if field is further than next and has same color:
 						// success!
 						if ((depth > 1)
-								&& (fields[searchX][searchY].getStatus().getValue() == currentPlayer)) {
+								&& (fields[searchX][searchY].getStatus()
+										.getValue() == currentPlayer)) {
 							abortSearch = true;
 							flipFields = true;
 							break;

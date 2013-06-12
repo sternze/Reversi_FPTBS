@@ -1,7 +1,5 @@
 package uni_klu.se2.reversi.gui;
 
-import java.security.acl.Owner;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.TimelineBuilder;

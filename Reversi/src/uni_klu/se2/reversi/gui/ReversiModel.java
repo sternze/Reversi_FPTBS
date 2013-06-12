@@ -3,55 +3,58 @@ package uni_klu.se2.reversi.gui;
 import java.util.Iterator;
 import java.util.List;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
-import javafx.beans.binding.NumberExpression;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import uni_klu.se2.reversi.data.Board;
-import uni_klu.se2.reversi.data.Field;
 import uni_klu.se2.reversi.data.FieldStatus;
 import uni_klu.se2.reversi.data.Move;
 import uni_klu.se2.reversi.engine.IPlayer;
 
 public class ReversiModel extends IPlayer {
-	public static int BOARD_SIZE = 8;
 	
-	public ObjectProperty<FieldStatus> turn = new SimpleObjectProperty<FieldStatus>(FieldStatus.BLACK);
+	private boolean myTurn;
 	
-	private boolean myTurn = false;
-	
-	public ReversiModel(Board myBoard) {
-		super(myBoard);
-		board = myBoard;
-		checkLegalMoves();
+	public ReversiModel(Board board) {
+		super(board);
+		this.board = board;
+		myTurn = false;
 	}
 	
 	public Board getBoard() {
 		return board;
 	}
 	
+	/*
 	public NumberExpression getScore(FieldStatus owner) {
 		NumberExpression score = new SimpleIntegerProperty();
-		for (int i = 0; i < BOARD_SIZE; i++) {
-			for (int j = 0; j < BOARD_SIZE; j++) {
+		for (int i = 0; i < board.BOARDSIZE; i++) {
+			for (int j = 0; j < board.BOARDSIZE; j++) {
 				score = score.add(Bindings.when(board.getFields()[i][j].getStatus().isEqualTo(owner)).then(1).otherwise(0));
 			}
 		}
 		return score;
 	}
+	*/
 	  
+	/*
 	public NumberBinding getTurnsRemaining(FieldStatus owner) {
 		NumberExpression emptyCellCount = getScore(FieldStatus.EMPTY);
 		return Bindings.when(turn.isEqualTo(owner))
 						.then(emptyCellCount.add(1).divide(2))
 						.otherwise(emptyCellCount.divide(2));
 	} 
+	*/
 	
-	public void checkLegalMoves() {
-		System.out.println("checklegalmoves");
-		List<Move> legalMoves = board.getAvailableMoves();
+	private void hideLegalMoves() {
+		for (int i = 0; i < board.BOARDSIZE; i++) {
+			for (int j = 0; j < board.BOARDSIZE; j++) {
+				if (board.getFields()[i][j].getStatus().getValue() == FieldStatus.LEGAL)
+					board.getFields()[i][j].getStatus().setValue(FieldStatus.EMPTY);
+			}
+		}
+	}
+	
+	private void showLegalMoves() {
+		System.out.println("checkLegalMoves");
+		List<Move> legalMoves = board.getAvailableMoves();		
 		Iterator<Move> iterator = legalMoves.iterator();
 		while(iterator.hasNext())
 		{
@@ -61,15 +64,16 @@ public class ReversiModel extends IPlayer {
 	}
 	
 	public void play(Move move) {
-		System.out.println("play (" + move.getX() + ", " + move.getY() + "): " + board.isMoveLegal(move.getX(), move.getY()));
-		if (board.isMoveLegal(move.getX(), move.getY())) {
+		if (myTurn && board.isMoveLegal(move.getX(), move.getY())) {
 			myTurn = false;
+			hideLegalMoves();
 			engine.onMoveReadyCalculated(move, false);
 		}
 	}
 	
 	@Override
 	public void yourTurn() {
+		showLegalMoves();
 		myTurn = true;
 	}
 
@@ -78,10 +82,6 @@ public class ReversiModel extends IPlayer {
 	}
 	
 	public boolean getMyTurn() {
-		return this.myTurn;
-	}
-	
-	public void setMyTurn(boolean myTurn) {
-		this.myTurn = myTurn;
+		return myTurn;
 	}
 }
