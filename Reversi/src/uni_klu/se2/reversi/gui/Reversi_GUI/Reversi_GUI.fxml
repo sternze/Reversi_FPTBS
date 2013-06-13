@@ -223,6 +223,6 @@
     </AnchorPane>
   </children>
   <stylesheets>
-    <URL value="@Reversi_GUI.css" />
+    <URL value="@Reversi_GUI_Metallic.css" />
   </stylesheets>
 </VBox>

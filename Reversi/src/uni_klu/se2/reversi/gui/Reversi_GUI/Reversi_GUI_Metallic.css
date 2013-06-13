@@ -9,6 +9,14 @@
     -fx-text-fill: #2d3e4c;
 }
 
+.reversi-square {
+	-fx-background-color: #177B0C
+}
+
+.reversi-square-legal {
+	-fx-background-color: derive(dodgerblue, -60%)
+}
+
 .reversi-piece {
 	-fx-background-radius: 1000em;
 	-fx-background-insets: 5;
