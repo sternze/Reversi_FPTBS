@@ -174,6 +174,10 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 		FPTBS_Reversi.showNewGame();
 	}
 	
+	public void setMetallicStyle(ActionEvent event) {
+		FPTBS_Reversi.changeGameStyle();
+	}
+	
 	public void startGame(ActionEvent event) {
 		
 	}

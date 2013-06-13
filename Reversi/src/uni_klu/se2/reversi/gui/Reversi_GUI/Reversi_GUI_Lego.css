@@ -15,14 +15,14 @@
 }
 
 .black-piece {
-	-fx-background-image: url("skins/Metallic/Metallic_SpielStein_Schwarz_Vektor.png");
+	-fx-background-image: url("skins/Lego/Reversi_Lego_Stein_blau.png");
 	-fx-background-size: 100%;
 	-fx-background-position: center center; 
 	-fx-background-repeat: no-repeat;
 }
 
 .white-piece {
-	-fx-background-image: url("skins/Metallic/Metallic_SpielStein_Weis_Vektor.png");
+	-fx-background-image: url("skins/Lego/Reversi_Lego_Stein_rot.png");
 	-fx-background-size: 100%;
 	-fx-background-position: center center; 
 	-fx-background-repeat: no-repeat;

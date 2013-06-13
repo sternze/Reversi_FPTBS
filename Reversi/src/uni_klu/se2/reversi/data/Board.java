@@ -158,7 +158,6 @@ public class Board {
 	}
 
 	public List<Move> getAvailableMoves() {
-		System.out.println("getAvailableMoves");
 		if (currentLegalMovesCalculated)
 			return currentLegalMoves;
 		currentLegalMovesCalculated = true;

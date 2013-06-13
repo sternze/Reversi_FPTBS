@@ -12,6 +12,7 @@ public class FPTBS_Reversi extends Application {
 
 	private static ReversiGUIController controller;
 	private static NewGameGUIController newGameController;
+	private static Parent gameGUI;
 	private static Stage primaryStage;
 	private static FPTBS_Reversi me;
 	
@@ -29,9 +30,9 @@ public class FPTBS_Reversi extends Application {
 		
 		initialize();
 		
-		Parent root = loadGameGUI();
+		gameGUI = loadGameGUI();
 		
-		primaryStage.setScene(new Scene(root, 1000, 630));
+		primaryStage.setScene(new Scene(gameGUI, 1000, 630));
 		primaryStage.show();
 	}
 	
@@ -70,6 +71,12 @@ public class FPTBS_Reversi extends Application {
 		}
 		
 		return root;
+	}
+	
+	public static void changeGameStyle() {
+		System.out.println(gameGUI.getStylesheets().get(0));
+		gameGUI.getStylesheets().add("file:" + FPTBS_Reversi.me.getClass().getResource("Reversi_GUI/Reversi_GUI_Lego.css").getPath());
+		gameGUI.getStylesheets().remove(0);
 	}
 	
 	public static void showNewGame() {

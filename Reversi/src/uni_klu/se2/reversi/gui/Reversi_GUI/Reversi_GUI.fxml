@@ -21,16 +21,12 @@
         <Menu mnemonicParsing="false" text="Statistics" />
         <Menu mnemonicParsing="false" text="Settings">
           <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
+            <Menu mnemonicParsing="false" text="Style">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#setMetallicStyle" text="Metallic" />
+                <MenuItem mnemonicParsing="false" text="Lego" />
+              </items>
+            </Menu>
           </items>
         </Menu>
       </menus>
@@ -181,71 +177,42 @@
                 </GridPane>
               </top>
             </BorderPane>
-            <AnchorPane id="P_Score" prefHeight="600.0" prefWidth="400.0" styleClass="P_Score" HBox.hgrow="ALWAYS">
+            <AnchorPane id="P_Score" minHeight="570.0" prefHeight="570.0" prefWidth="400.0" styleClass="P_Score" HBox.hgrow="ALWAYS">
               <children>
-                <FlowPane prefHeight="900.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <FlowPane prefHeight="570.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <children>
-                    <VBox prefHeight="600.0" prefWidth="400.0">
+                    <HBox prefHeight="150.0" prefWidth="400.0">
                       <children>
-                        <AnchorPane prefHeight="300.0" prefWidth="400.0">
+                        <AnchorPane fx:id="BlackIcon" prefHeight="150.0" prefWidth="125.0" />
+                        <AnchorPane prefHeight="200.0" prefWidth="275.0">
                           <children>
-                            <GridPane prefHeight="300.0" prefWidth="400.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                            <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="0.0" prefHeight="150.0" prefWidth="275.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                               <children>
-                                <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                                  <children>
-                                    <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" />
-                                  </children>
-                                </VBox>
-                                <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                <FlowPane alignment="CENTER" columnHalignment="LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                <Label fx:id="ScoreBlack" text="Black">
+                                  <font>
+                                    <Font name="System Bold" size="60.0" fx:id="x2" />
+                                  </font>
+                                </Label>
                               </children>
-                              <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              </columnConstraints>
-                              <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              </rowConstraints>
-                            </GridPane>
+                            </FlowPane>
                           </children>
                         </AnchorPane>
-                        <HBox prefHeight="150.0" prefWidth="400.0">
-                          <children>
-                            <AnchorPane fx:id="BlackIcon" prefHeight="150.0" prefWidth="125.0" />
-                            <AnchorPane prefHeight="200.0" prefWidth="275.0">
-                              <children>
-                                <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="0.0" prefHeight="150.0" prefWidth="275.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                  <children>
-                                    <Label fx:id="ScoreBlack" text="Black">
-                                      <font>
-                                        <Font name="System Bold" size="60.0" fx:id="x2" />
-                                      </font>
-                                    </Label>
-                                  </children>
-                                </FlowPane>
-                              </children>
-                            </AnchorPane>
-                          </children>
-                        </HBox>
-                        <HBox prefHeight="150.0" prefWidth="400.0">
-                          <children>
-                            <AnchorPane fx:id="WhiteIcon" prefHeight="150.0" prefWidth="125.0" />
-                            <AnchorPane prefHeight="200.0" prefWidth="275.0">
-                              <children>
-                                <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="0.0" prefHeight="90.0" prefWidth="275.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                  <children>
-                                    <Label fx:id="ScoreWhite" font="$x2" text="White" />
-                                  </children>
-                                </FlowPane>
-                              </children>
-                            </AnchorPane>
-                          </children>
-                        </HBox>
                       </children>
-                    </VBox>
+                    </HBox>
+                    <HBox prefHeight="150.0" prefWidth="400.0">
+                      <children>
+                        <AnchorPane fx:id="WhiteIcon" prefHeight="150.0" prefWidth="125.0" />
+                        <AnchorPane prefHeight="200.0" prefWidth="275.0">
+                          <children>
+                            <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="0.0" prefHeight="90.0" prefWidth="275.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <children>
+                                <Label fx:id="ScoreWhite" font="$x2" text="White" />
+                              </children>
+                            </FlowPane>
+                          </children>
+                        </AnchorPane>
+                      </children>
+                    </HBox>
                   </children>
                 </FlowPane>
               </children>
