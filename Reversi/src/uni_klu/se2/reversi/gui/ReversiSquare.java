@@ -1,6 +1,5 @@
 package uni_klu.se2.reversi.gui;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
