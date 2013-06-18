@@ -73,10 +73,15 @@ public class FPTBS_Reversi extends Application {
 		return root;
 	}
 	
-	public static void changeGameStyle() {
-		System.out.println(gameGUI.getStylesheets().get(0));
-		gameGUI.getStylesheets().add("file:" + FPTBS_Reversi.me.getClass().getResource("Reversi_GUI/Reversi_GUI_Lego.css").getPath());
-		gameGUI.getStylesheets().remove(0);
+	public static void changeGameStyle(Style style) {
+		
+		if (style.equals(Style.LEGO)) {
+			gameGUI.getStylesheets().add("file:" + FPTBS_Reversi.me.getClass().getResource("Reversi_GUI/Reversi_GUI_Lego.css").getPath());
+			gameGUI.getStylesheets().remove(0);
+		} else if (style.equals(Style.METALLIC)) {
+			gameGUI.getStylesheets().add("file:" + FPTBS_Reversi.me.getClass().getResource("Reversi_GUI/Reversi_GUI_Metallic.css").getPath());
+			gameGUI.getStylesheets().remove(0);
+		}
 	}
 	
 	public static void showNewGame() {

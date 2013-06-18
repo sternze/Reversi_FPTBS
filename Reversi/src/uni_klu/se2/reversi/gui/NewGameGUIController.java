@@ -4,22 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPaneBuilder;
-import uni_klu.se2.reversi.data.Board;
-import uni_klu.se2.reversi.data.BoardStatus;
-import uni_klu.se2.reversi.engine.IPlayer;
-import uni_klu.se2.reversi.engine.ReversiEngine;
-import uni_klu.se2.reversi.engine.player.DeepMinMaxComputerPlayer;
-import uni_klu.se2.reversi.engine.player.NaivDiskSquareComputerPlayer;
-import uni_klu.se2.reversi.engine.player.RandomComputerPlayer;
-import uni_klu.se2.reversi.engine.player.SimpleMinMaxComputerPlayer;
-import uni_klu.se2.reversi.helper.SocketHelperNotification;
 
 public class NewGameGUIController implements Initializable {
 

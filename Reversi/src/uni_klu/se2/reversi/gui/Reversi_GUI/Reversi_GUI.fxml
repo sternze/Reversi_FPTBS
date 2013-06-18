@@ -24,14 +24,14 @@
             <Menu mnemonicParsing="false" text="Style">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#setMetallicStyle" text="Metallic" />
-                <MenuItem mnemonicParsing="false" text="Lego" />
+                <MenuItem mnemonicParsing="false" onAction="#setLegoStyle" text="Lego" />
               </items>
             </Menu>
           </items>
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane id="AP_Background" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="AP_Background" VBox.vgrow="ALWAYS">
+    <AnchorPane id="AP_Background" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="game-background" VBox.vgrow="ALWAYS">
       <children>
         <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <children>
