@@ -3,6 +3,10 @@ package uni_klu.se2.reversi.gui;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
+import javafx.beans.binding.NumberExpression;
+import javafx.beans.property.SimpleIntegerProperty;
 import uni_klu.se2.reversi.data.Board;
 import uni_klu.se2.reversi.data.FieldStatus;
 import uni_klu.se2.reversi.data.Move;
@@ -22,7 +26,7 @@ public class ReversiModel extends IPlayer {
 		return board;
 	}
 	
-	/*
+	
 	public NumberExpression getScore(FieldStatus owner) {
 		NumberExpression score = new SimpleIntegerProperty();
 		for (int i = 0; i < board.BOARDSIZE; i++) {
@@ -32,16 +36,17 @@ public class ReversiModel extends IPlayer {
 		}
 		return score;
 	}
-	*/
-	  
-	/*
+	
 	public NumberBinding getTurnsRemaining(FieldStatus owner) {
 		NumberExpression emptyCellCount = getScore(FieldStatus.EMPTY);
-		return Bindings.when(turn.isEqualTo(owner))
-						.then(emptyCellCount.add(1).divide(2))
-						.otherwise(emptyCellCount.divide(2));
+		
+		if (board.getCurrentPlayer() == owner) {
+			return emptyCellCount.add(1).divide(2);
+		} else {
+			return emptyCellCount.divide(2);
+		}
 	} 
-	*/
+	
 	
 	private void hideLegalMoves() {
 		for (int i = 0; i < board.BOARDSIZE; i++) {

@@ -31,7 +31,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane id="AP_Background" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="AP_Background" VBox.vgrow="ALWAYS">
+    <AnchorPane id="AP_Background" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="game-background" VBox.vgrow="ALWAYS">
       <children>
         <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <children>
@@ -183,32 +183,22 @@
                   <children>
                     <HBox prefHeight="150.0" prefWidth="400.0">
                       <children>
-                        <AnchorPane fx:id="BlackIcon" prefHeight="150.0" prefWidth="125.0" />
-                        <AnchorPane prefHeight="200.0" prefWidth="275.0">
+                        <AnchorPane prefHeight="150.0" prefWidth="155.0">
                           <children>
-                            <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="0.0" prefHeight="150.0" prefWidth="275.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                              <children>
-                                <Label fx:id="ScoreBlack" text="Black">
-                                  <font>
-                                    <Font name="System Bold" size="60.0" fx:id="x2" />
-                                  </font>
-                                </Label>
-                              </children>
-                            </FlowPane>
+                            <Label id="" fx:id="ScoreBlack" alignment="CENTER" contentDisplay="CENTER" prefHeight="150.0" prefWidth="150.0" text="Black" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <font>
+                                <Font name="System Bold" size="60.0" fx:id="x2" />
+                              </font>
+                            </Label>
                           </children>
                         </AnchorPane>
                       </children>
                     </HBox>
                     <HBox prefHeight="150.0" prefWidth="400.0">
                       <children>
-                        <AnchorPane fx:id="WhiteIcon" prefHeight="150.0" prefWidth="125.0" />
-                        <AnchorPane prefHeight="200.0" prefWidth="275.0">
+                        <AnchorPane prefHeight="200.0" prefWidth="155.0">
                           <children>
-                            <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="0.0" prefHeight="90.0" prefWidth="275.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                              <children>
-                                <Label fx:id="ScoreWhite" font="$x2" text="White" />
-                              </children>
-                            </FlowPane>
+                            <Label id="" fx:id="ScoreWhite" alignment="CENTER" contentDisplay="CENTER" font="$x2" prefHeight="150.0" prefWidth="150.0" text="White" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                           </children>
                         </AnchorPane>
                       </children>

@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPaneBuilder;
 import uni_klu.se2.reversi.data.Board;
 import uni_klu.se2.reversi.data.BoardStatus;
+import uni_klu.se2.reversi.data.FieldStatus;
 import uni_klu.se2.reversi.engine.IPlayer;
 import uni_klu.se2.reversi.engine.ReversiEngine;
 import uni_klu.se2.reversi.engine.player.DeepMinMaxComputerPlayer;
@@ -25,10 +26,6 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 
 	@FXML
 	public GridPane gameBoard;
-	@FXML
-	public AnchorPane BlackIcon;
-	@FXML
-	public AnchorPane WhiteIcon;
 	@FXML
 	public Label ScoreBlack;
 	@FXML
@@ -50,8 +47,6 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 	
 	private void clearGUI() {
 		gameBoard.getChildren().clear();
-		BlackIcon.getChildren().clear();
-		WhiteIcon.getChildren().clear();
 	}
 	
 	private void initGame() {
@@ -67,31 +62,20 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 		}
 	}
 	
-	/*
-	private void initScore() {
-		
-		ReversiPiece white = new ReversiPiece(FieldStatus.WHITE);
-		ReversiPiece black = new ReversiPiece(FieldStatus.BLACK);
 	
-		white.setPrefWidth(WhiteIcon.getPrefWidth());
-		white.setPrefHeight(WhiteIcon.getPrefWidth());
-		black.setPrefWidth(BlackIcon.getPrefWidth());
-		black.setPrefHeight(BlackIcon.getPrefWidth());		
-		
-		WhiteIcon.getChildren().add(white);
-		BlackIcon.getChildren().add(black);
+	private void initScore() {
 		
 		ScoreWhite.textProperty().bind(model.getScore(FieldStatus.WHITE).asString());
 		ScoreBlack.textProperty().bind(model.getScore(FieldStatus.BLACK).asString());
 		
 	}
-	*/
 	
 	public void newGame(ActionEvent event) {
 		System.out.println("new game!");
 		
 		clearGUI();
 		initGame();
+		initScore();
 		
 		IPlayer Pwhite = getPlayer(0);
 		IPlayer Pblack = getPlayer(0);	
