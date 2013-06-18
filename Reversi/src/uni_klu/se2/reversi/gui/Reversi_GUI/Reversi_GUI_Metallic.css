@@ -9,12 +9,22 @@
     -fx-text-fill: #2d3e4c;
 }
 
+.game-background {
+	-fx-background-image: url("skins/Metallic/background.jpg");
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: 100%;
+}
+
 .reversi-square {
-	-fx-background-color: #177B0C
+	-fx-background-image: url("skins/Metallic/spielbrett.jpg");
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: 100%;
 }
 
 .reversi-square-legal {
-	-fx-background-color: derive(dodgerblue, -60%)
+	-fx-background-image: url("skins/Metallic/legal.jpg");
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: 100%;
 }
 
 .reversi-piece {

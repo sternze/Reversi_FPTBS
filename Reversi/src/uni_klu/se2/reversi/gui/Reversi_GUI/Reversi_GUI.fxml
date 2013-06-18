@@ -41,7 +41,7 @@
                   <children>
                     <Label alignment="CENTER" contentDisplay="LEFT" prefHeight="60.0" prefWidth="60.0" text="A" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="1" GridPane.rowIndex="0">
                       <font>
-                        <Font size="35.0" fx:id="x1" />
+                        <Font name="System Bold" size="35.0" fx:id="x1" />
                       </font>
                     </Label>
                     <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="B" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="2" GridPane.rowIndex="0" />

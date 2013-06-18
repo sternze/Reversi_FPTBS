@@ -183,7 +183,7 @@
                   <children>
                     <HBox prefHeight="150.0" prefWidth="400.0">
                       <children>
-                        <AnchorPane prefHeight="150.0" prefWidth="155.0">
+                        <AnchorPane prefHeight="150.0" prefWidth="150.0">
                           <children>
                             <Label id="" fx:id="ScoreBlack" alignment="CENTER" contentDisplay="CENTER" prefHeight="150.0" prefWidth="150.0" text="Black" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                               <font>
@@ -192,13 +192,23 @@
                             </Label>
                           </children>
                         </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="250.0">
+                          <children>
+                            <Label font="$x2" prefHeight="150.0" prefWidth="250.0" text="Black" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                          </children>
+                        </AnchorPane>
                       </children>
                     </HBox>
                     <HBox prefHeight="150.0" prefWidth="400.0">
                       <children>
-                        <AnchorPane prefHeight="200.0" prefWidth="155.0">
+                        <AnchorPane prefHeight="150.0" prefWidth="150.0">
                           <children>
                             <Label id="" fx:id="ScoreWhite" alignment="CENTER" contentDisplay="CENTER" font="$x2" prefHeight="150.0" prefWidth="150.0" text="White" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                          </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="250.0">
+                          <children>
+                            <Label font="$x2" prefHeight="150.0" prefWidth="250.0" text="White" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                           </children>
                         </AnchorPane>
                       </children>
