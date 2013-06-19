@@ -13,12 +13,7 @@ public class NewGameGUIController implements Initializable {
 		// TODO Auto-generated method stub
 	}
 
-	
-	
-	
-	
-	
-	
+		
 	/*
 	private void initScore() {
 		
