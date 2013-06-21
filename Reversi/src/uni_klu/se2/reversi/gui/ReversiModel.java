@@ -11,11 +11,13 @@ import uni_klu.se2.reversi.data.Board;
 import uni_klu.se2.reversi.data.FieldStatus;
 import uni_klu.se2.reversi.data.Move;
 import uni_klu.se2.reversi.engine.IPlayer;
+import uni_klu.se2.reversi.speech.ReversiSpeech;
 
 public class ReversiModel extends IPlayer {
 	
 	private boolean myTurn;
 	private boolean showPossibleMoves = true;
+	private boolean recognizeSpeech = false;
 		
 	public ReversiModel(Board board) {
 		super(board);
@@ -60,7 +62,8 @@ public class ReversiModel extends IPlayer {
 	
 	private void showLegalMoves() {
 		System.out.println("checkLegalMoves");
-		List<Move> legalMoves = board.getAvailableMoves();		
+		List<Move> legalMoves = board.getAvailableMoves();
+		ReversiSpeech rs = new ReversiSpeech(legalMoves);	// check where to hook the speech recognition
 		Iterator<Move> iterator = legalMoves.iterator();
 		while(iterator.hasNext())
 		{
@@ -105,5 +108,15 @@ public class ReversiModel extends IPlayer {
 			hideLegalMoves();
 		}
 	}
+
+	public boolean isRecognizeSpeech() {
+		return recognizeSpeech;
+	}
+
+	public void setRecognizeSpeech(boolean recognizeSpeech) {
+		this.recognizeSpeech = recognizeSpeech;
+	}
+	
+	
 	
 }

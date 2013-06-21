@@ -1,0 +1,7 @@
+#JSGF V1.0;
+/**
+ * JSGF Grammar for temporary generated file
+ */
+grammar CurrentPossibleGrammar;
+public <input> = (
+(D Three),(F Three),(F Five));

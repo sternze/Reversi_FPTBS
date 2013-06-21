@@ -34,6 +34,7 @@
               </items>
             </Menu>
             <CheckMenuItem mnemonicParsing="false" onAction="#showPossibleMovesChanged" text="Show possible moves" fx:id="cmiShowPossibleMoves" />
+            <CheckMenuItem mnemonicParsing="false" onAction="#recognizeSpeechChanged" text="Speech Input (Beta)" fx:id="cmiSpeechRecognition" />
           </items>
         </Menu>
       </menus>

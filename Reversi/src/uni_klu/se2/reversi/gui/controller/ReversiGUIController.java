@@ -51,11 +51,13 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 	@FXML
 	public CheckMenuItem cmiShowPossibleMoves;
 	@FXML
+	public CheckMenuItem cmiSpeechRecognition;
+	@FXML
 	private static Stage primaryStage;
 	
 	private int blackPlayerID = 1;
 	private int whitePlayerID = 0;
-	
+
 	private static ReversiModel model;
 	private static ReversiEngine engine;
 	private static Board board;
@@ -244,6 +246,13 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 		cmiShowPossibleMoves.setSelected(model.isShowPossibleMoves());		
 	}
 	
+	@FXML
+	public void recognizeSpeechChanged(ActionEvent event) {
+		model.setRecognizeSpeech(!model.isRecognizeSpeech());
+		
+		cmiSpeechRecognition.setSelected(model.isShowPossibleMoves());
+	}
+
 	@FXML
 	public void deleteAllSavedData(ActionEvent event) {
 		int retVal = MessageBox.show(primaryStage,
