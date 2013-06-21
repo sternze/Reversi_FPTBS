@@ -11,6 +11,7 @@ import java.util.UUID;
 
 
 import uni_klu.se2.reversi.data.Game;
+import uni_klu.se2.reversi.data.User;
 import uni_klu.se2.reversi.db.factories.H2DBDAOFactory;
 import uni_klu.se2.reversi.db.interfaces.GameDAO;
 
@@ -31,7 +32,7 @@ public class H2DBGameDAO implements GameDAO {
 	 * @param whiteUser_Name The username of the white user
 	 * @return the newly assigned UUID of the Game
 	 */
-	public UUID createGame(String blackUser_Name, String whiteUser_Name) {
+	public UUID createGame(String blackUser_Name, String whiteUser_Name, int blackAlgId, int whiteAlgId) {
 		UUID gameID = UUID.randomUUID();
 		Connection conn = H2DBDAOFactory.createConnection();
 		boolean blackPlayerExists = false;
@@ -40,13 +41,15 @@ public class H2DBGameDAO implements GameDAO {
 		if(conn != null) {
 			try {
 				PreparedStatement stmt = conn.prepareStatement("INSERT INTO GAME VALUES(" +
-						"?, ?, ?, ?, ?)");
+						"?, ?, ?, ?, ?, ?, ?)");
 				
 				stmt.setString(1, gameID.toString());
 				stmt.setNull(2, java.sql.Types.NVARCHAR);
 				stmt.setNull(3, java.sql.Types.NVARCHAR);
 				stmt.setBoolean(4, false);
 				stmt.setBoolean(5, false);
+				stmt.setInt(6, blackAlgId);
+				stmt.setInt(7, whiteAlgId);
 				
 				
 				stmt.executeUpdate();
@@ -185,7 +188,7 @@ public class H2DBGameDAO implements GameDAO {
 		
 		if(conn != null) {
 			try {
-				String selectString = "SELECT ID, blackFields, whiteFields, finished, blacksTurn FROM GAME";
+				String selectString = "SELECT ID, blackFields, whiteFields, finished, blacksTurn, blackAlgorithmId, whiteAlgorithmId FROM GAME";
 				if(!includeFinishedGames) {
 					selectString += " WHERE finished = ?";
 				}
@@ -205,11 +208,31 @@ public class H2DBGameDAO implements GameDAO {
 					g.setWhiteFields(rs.getString(3));
 					g.setFinished(rs.getBoolean(4));
 					g.setBlacksTurn(rs.getBoolean(5));
+					g.setBlackAlgorithmId(rs.getInt(6));
+					g.setWhiteAlgorithmId(rs.getInt(7));
 					
 					games.add(g);
 				}
 				rs.close();
 				stmt.close();
+				
+				for(Game g : games) {
+					PreparedStatement players = conn.prepareStatement("SELECT pg.BlackPlayer, pg.WhitePlayer FROM Game g, PlayingGame pg WHERE g.ID = pg.GameID AND g.ID = ?");
+					
+					players.setString(1, g.getID().toString());
+					
+					ResultSet playerRs = players.executeQuery();
+					while(playerRs.next()) {
+						User black = new User();
+						black.setUserName(playerRs.getString(1));
+						g.setBlackPlayer(black);
+
+						User white = new User();
+						white.setUserName(playerRs.getString(2));
+						g.setWhitePlayer(white);
+					}
+				}
+				
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
@@ -243,7 +266,8 @@ public class H2DBGameDAO implements GameDAO {
 		if(conn != null) {
 			try {
 				String selectString = "SELECT game.ID, game.blackFields, " +
-						"game.whiteFields, game.finished, game.blacksTurn FROM GAME game, PlayingGame playing " +
+						"game.whiteFields, game.finished, game.blacksTurn, " +
+						"game.blackAlgorithmId, game.whiteAlgorithmId FROM GAME game, PlayingGame playing " +
 						"WHERE (playing.BlackPlayer = ? OR playing.WhitePlayer = ?) AND " + 
 						"game.ID = playing.GameID";
 				if(!includeFinishedGames) {
@@ -268,11 +292,31 @@ public class H2DBGameDAO implements GameDAO {
 					g.setWhiteFields(rs.getString(3));
 					g.setFinished(rs.getBoolean(4));
 					g.setBlacksTurn(rs.getBoolean(5));
+					g.setBlackAlgorithmId(rs.getInt(6));
+					g.setWhiteAlgorithmId(rs.getInt(7));
 					
 					games.add(g);
 				}
 				rs.close();
 				stmt.close();
+				
+
+				for(Game g : games) {
+					PreparedStatement players = conn.prepareStatement("SELECT pg.BlackPlayer, pg.WhitePlayer FROM Game g, PlayingGame pg WHERE g.ID = pg.GameID AND g.ID = ?");
+					
+					players.setString(1, g.getID().toString());
+					
+					ResultSet playerRs = players.executeQuery();
+					while(playerRs.next()) {
+						User black = new User();
+						black.setUserName(playerRs.getString(1));
+						g.setBlackPlayer(black);
+
+						User white = new User();
+						white.setUserName(playerRs.getString(2));
+						g.setWhitePlayer(white);
+					}
+				}
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
@@ -304,7 +348,8 @@ public class H2DBGameDAO implements GameDAO {
 		
 		if(conn != null) {
 			try {
-				String selectString = "SELECT ID, blackFields, whiteFields, finished, blacksTurn FROM GAME" +
+				String selectString = "SELECT ID, blackFields, whiteFields, finished, blacksTurn, " +
+						"blackAlgorithmId, whiteAlgorithmId FROM GAME" +
 						" WHERE ID = ?";
 				
 
@@ -320,19 +365,39 @@ public class H2DBGameDAO implements GameDAO {
 					game.setWhiteFields(rs.getString(3));
 					game.setFinished(rs.getBoolean(4));
 					game.setBlacksTurn(rs.getBoolean(5));
+					game.setBlackAlgorithmId(rs.getInt(6));
+					game.setWhiteAlgorithmId(rs.getInt(7));
 				}
 				rs.close();
 				stmt.close();
+				
+				PreparedStatement players = conn.prepareStatement("SELECT pg.BlackPlayer, pg.WhitePlayer FROM Game g, PlayingGame pg WHERE g.ID = pg.GameID AND g.ID = ?");
+				
+				players.setString(1, game.getID().toString());
+				
+				ResultSet playerRs = players.executeQuery();
+				while(playerRs.next()) {
+					User black = new User();
+					black.setUserName(playerRs.getString(1));
+					game.setBlackPlayer(black);
+
+					User white = new User();
+					white.setUserName(playerRs.getString(2));
+					game.setWhitePlayer(white);
+				}
+				
 			}
 			catch(SQLTimeoutException sqlTimeEx)
 			{
 				System.out.println("Timeout happend while deleting!");
 				System.out.println(sqlTimeEx.toString());
+				game = null;
 			}
 			catch(SQLException sqlEx)
 			{
 				System.out.println("DB-Access Error while deleting");
 				System.out.println(sqlEx.toString());
+				game = null;
 			} finally {
 				closeDBConnection(conn);
 			}
@@ -354,13 +419,16 @@ public class H2DBGameDAO implements GameDAO {
 		if(conn != null) { 
 			try {
 				PreparedStatement stmt = conn.prepareStatement("UPDATE GAME SET " +
-						"blackFields = ?, whiteFields = ?, finished = ?, blacksTurn = ? WHERE ID = ?");
+						"blackFields = ?, whiteFields = ?, finished = ?, blacksTurn = ? " +
+						", blackAlgorithmId = ?, whiteAlgorithmId = ? WHERE ID = ?");
 				
 				stmt.setString(1, g.getBlackFields());
 				stmt.setString(2, g.getWhiteFields());
 				stmt.setBoolean(3, g.isFinished());
 				stmt.setBoolean(4, g.isBlacksTurn());
-				stmt.setString(5, g.getID().toString());
+				stmt.setInt(5, g.getBlackAlgorithmId());
+				stmt.setInt(6, g.getWhiteAlgorithmId());
+				stmt.setString(7, g.getID().toString());
 				
 				if(stmt.executeUpdate() > 0) {
 					//System.out.println("Deleted: " + stmt.getUpdateCount() + " Entries");

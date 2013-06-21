@@ -11,7 +11,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="311.0" prefWidth="505.0" vgap="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="uni_klu.se2.reversi.gui.NewGameGUIController">
+<GridPane hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="311.0" prefWidth="803.0" vgap="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="uni_klu.se2.reversi.gui.controller.GameStatisticsGUIController">
   <children>
     <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="TOP">
       <image>
@@ -22,39 +22,32 @@
       <children>
         <VBox maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" spacing="7.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <children>
-            <AnchorPane>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="403.0" text="Please choose a user and the game.">
+              <font>
+                <Font size="20.0" />
+              </font>
+            </Label>
+            <VBox prefHeight="200.0" prefWidth="100.0">
               <children>
-                <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <HBox prefHeight="33.0" prefWidth="403.0">
                   <children>
-                    <Label text="Player 1">
-                      <HBox.margin>
-                        <Insets right="20.0" fx:id="x1" />
-                      </HBox.margin>
+                    <Label prefHeight="25.0" prefWidth="261.0" text="User">
+                      <font>
+                        <Font name="System Bold" size="18.5" fx:id="x1" />
+                      </font>
                     </Label>
-                    <TextField fx:id="playerOne" prefWidth="200.0" />
+                    <Label font="$x1" prefWidth="201.0" text="Game" />
                   </children>
                 </HBox>
-              </children>
-            </AnchorPane>
-            <AnchorPane>
-              <children>
-                <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <HBox prefHeight="183.0" prefWidth="403.0">
                   <children>
-                    <Label text="Player 2" HBox.margin="$x1" />
-                    <ComboBox fx:id="cbPlayer2" onAction="#cbPlayer2Changed" prefHeight="21.0" prefWidth="200.0" promptText="Choose your oppenent">
-                      <items>
-                        <FXCollections fx:factory="observableArrayList">
-                          <String fx:value="Item 1" />
-                          <String fx:value="Item 2" />
-                          <String fx:value="Item 3" />
-                        </FXCollections>
-                      </items>
-                    </ComboBox>
+                    <ListView id="lvUser" fx:id="lvUsers" onMouseClicked="#lvUserClicked" prefHeight="175.0" prefWidth="247.0" />
+                    <Separator orientation="VERTICAL" prefHeight="175.0" prefWidth="16.0" />
+                    <ListView id="lvGame" fx:id="lvGames" prefHeight="175.0" prefWidth="438.0" />
                   </children>
                 </HBox>
               </children>
-            </AnchorPane>
-            <TextField id="playerOne" fx:id="playerTwo" disable="true" prefWidth="200.0" />
+            </VBox>
           </children>
         </VBox>
       </children>
@@ -67,12 +60,12 @@
           </HBox.margin>
         </HBox>
         <Pane maxWidth="+Infinity" HBox.hgrow="ALWAYS" />
-        <Button id="cancelButton" fx:id="CancelButton" cancelButton="true" minWidth="80.0" mnemonicParsing="false" onAction="#cancelNewGame" text="Cancel" HBox.hgrow="NEVER">
+        <Button id="cancelButton" fx:id="CancelButton" cancelButton="true" minWidth="80.0" mnemonicParsing="false" onAction="#closeDialog" text="Close" HBox.hgrow="NEVER">
           <HBox.margin>
             <Insets />
           </HBox.margin>
         </Button>
-        <Button id="okButton" minWidth="80.0" mnemonicParsing="false" onAction="#startGame" text="Start Game" HBox.hgrow="NEVER">
+        <Button id="okButton" minWidth="80.0" mnemonicParsing="false" onAction="#generateGameStatistics" text="Generate Statistics" HBox.hgrow="NEVER">
           <HBox.margin>
             <Insets left="14.0" />
           </HBox.margin>
@@ -92,6 +85,6 @@
     <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="NEVER" />
   </rowConstraints>
   <stylesheets>
-    <URL value="@NewGameDialog.css" />
+    <URL value="@GameStatisticsDialog.css" />
   </stylesheets>
 </GridPane>

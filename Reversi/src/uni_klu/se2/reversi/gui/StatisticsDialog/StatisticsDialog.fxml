@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="311.0" prefWidth="598.0" vgap="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="uni_klu.se2.reversi.gui.controller.StatisticsViewerGUIController">
+  <children>
+    <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="TOP">
+      <image>
+        <Image url="@../GameStatisticsDialog/AlertDialog.png" preserveRatio="false" smooth="false" />
+      </image>
+    </ImageView>
+    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+      <children>
+        <VBox maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" spacing="7.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <children>
+            <HBox prefHeight="40.0" prefWidth="496.0">
+              <children>
+                <Label contentDisplay="CENTER" prefHeight="33.0" prefWidth="150.0" text="Users color was:">
+                  <font>
+                    <Font size="20.0" fx:id="x1" />
+                  </font>
+                </Label>
+                <Label fx:id="lUsersColor" font="$x1" prefHeight="33.0" prefWidth="71.0" text="Black" />
+              </children>
+            </HBox>
+            <HBox prefHeight="183.0" prefWidth="403.0">
+              <children>
+                <VBox prefHeight="183.0" prefWidth="188.0">
+                  <children>
+                    <HBox prefHeight="20.0" prefWidth="188.0">
+                      <children>
+                        <Label prefWidth="106.0" text="Games Won:">
+                          <font>
+                            <Font size="18.0" fx:id="x2" />
+                          </font>
+                        </Label>
+                        <Label fx:id="lGamesWon" font="$x2" prefWidth="53.0" text="0" />
+                      </children>
+                    </HBox>
+                    <HBox prefHeight="20.0" prefWidth="188.0">
+                      <children>
+                        <Label font="$x2" prefWidth="106.0" text="Games Lost:" />
+                        <Label fx:id="lGamesLost" font="$x2" prefWidth="53.0" text="0" />
+                      </children>
+                    </HBox>
+                    <HBox prefHeight="20.0" prefWidth="188.0">
+                      <children>
+                        <Label font="$x2" prefWidth="108.0" text="Games Draw:" />
+                        <Label id="lGamesLost" fx:id="lGamesDraw" font="$x2" prefWidth="49.0" text="0" />
+                      </children>
+                    </HBox>
+                    <HBox prefHeight="20.0" prefWidth="188.0">
+                      <children>
+                        <Label font="$x2" prefWidth="120.0" text="Games Played:" />
+                        <Label id="lGamesLost" fx:id="lGamesPlayed" font="$x2" prefWidth="53.0" text="0" />
+                      </children>
+                    </HBox>
+                    <HBox prefHeight="20.0" prefWidth="188.0">
+                      <children>
+                        <Label font="$x2" prefWidth="138.0" text="Games Ongoing:" />
+                        <Label id="lGamesLost" fx:id="lGamesOngoing" font="$x2" prefWidth="53.0" text="0" />
+                      </children>
+                    </HBox>
+                  </children>
+                </VBox>
+                <PieChart id="PieChart" fx:id="pieChart" prefHeight="183.0" prefWidth="309.0" title="" />
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+      </children>
+    </AnchorPane>
+    <HBox maxHeight="-Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <children>
+        <HBox id="HBox" alignment="CENTER">
+          <HBox.margin>
+            <Insets />
+          </HBox.margin>
+        </HBox>
+        <Pane maxWidth="+Infinity" HBox.hgrow="ALWAYS" />
+        <Button id="cancelButton" cancelButton="true" minWidth="80.0" mnemonicParsing="false" onAction="#closeDialog" text="Close" HBox.hgrow="NEVER">
+          <HBox.margin>
+            <Insets />
+          </HBox.margin>
+        </Button>
+      </children>
+    </HBox>
+  </children>
+  <columnConstraints>
+    <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
+    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="+Infinity" minWidth="-Infinity" />
+  </columnConstraints>
+  <padding>
+    <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+  </padding>
+  <rowConstraints>
+    <RowConstraints maxHeight="+Infinity" minHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
+    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="NEVER" />
+  </rowConstraints>
+  <stylesheets>
+    <URL value="@StatisticsDialog.css" />
+  </stylesheets>
+</GridPane>

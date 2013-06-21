@@ -45,10 +45,16 @@ public class Field
 	
 	public void flip()
 	{
-		if (this.status.getValue() == FieldStatus.BLACK)
-			this.status.setValue(FieldStatus.WHITE);
-		else
-			this.status.setValue(FieldStatus.BLACK);
+		try {
+			if (this.status.getValue() == FieldStatus.BLACK)
+				this.status.setValue(FieldStatus.WHITE);
+				//this.setStatus(new SimpleObjectProperty<FieldStatus>(FieldStatus.WHITE));
+			else
+				this.status.setValue(FieldStatus.BLACK);
+				//this.setStatus(new SimpleObjectProperty<FieldStatus>(FieldStatus.BLACK));
+		} catch (Exception ex) {
+			System.out.println("Flip failed. " + ex.toString());
+		}
 	}
 
 	public int getX() {

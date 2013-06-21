@@ -8,17 +8,23 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="mainView" prefHeight="400.0" prefWidth="640.0" xmlns:fx="http://javafx.com/fxml" fx:controller="uni_klu.se2.reversi.gui.ReversiGUIController">
+<VBox fx:id="mainView" prefHeight="400.0" prefWidth="640.0" xmlns:fx="http://javafx.com/fxml" fx:controller="uni_klu.se2.reversi.gui.controller.ReversiGUIController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu id="" mnemonicParsing="false" text="New Game">
+        <Menu id="" mnemonicParsing="false" text="Game">
           <items>
+            <MenuItem mnemonicParsing="false" onAction="#resetGame" text="Reset Game" />
             <MenuItem mnemonicParsing="false" onAction="#newGame" text="New Game" />
             <MenuItem mnemonicParsing="false" onAction="#loadGame" text="Load Game" />
+            <MenuItem mnemonicParsing="false" onAction="#deleteAllSavedData" text="Delete All Saved Data" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Statistics" />
+        <Menu mnemonicParsing="false" text="Statistics">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#showGameStatisticsClicked" text="Show Game Statistics" />
+          </items>
+        </Menu>
         <Menu mnemonicParsing="false" text="Settings">
           <items>
             <Menu mnemonicParsing="false" text="Style">
@@ -27,11 +33,12 @@
                 <MenuItem mnemonicParsing="false" onAction="#setLegoStyle" text="Lego" />
               </items>
             </Menu>
+            <CheckMenuItem mnemonicParsing="false" onAction="#showPossibleMovesChanged" text="Show possible moves" fx:id="cmiShowPossibleMoves" />
           </items>
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane id="AP_Background" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="game-background" VBox.vgrow="ALWAYS">
+    <AnchorPane id="AP_Background" styleClass="game-background" VBox.vgrow="ALWAYS">
       <children>
         <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <children>
@@ -39,18 +46,18 @@
               <bottom>
                 <GridPane prefHeight="60.0" prefWidth="600.0">
                   <children>
-                    <Label alignment="CENTER" contentDisplay="LEFT" prefHeight="60.0" prefWidth="60.0" text="A" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label alignment="CENTER" prefHeight="60.0" prefWidth="60.0" text="A" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0">
                       <font>
                         <Font name="System Bold" size="35.0" fx:id="x1" />
                       </font>
                     </Label>
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="B" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="C" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="D" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="E" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="5" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="F" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="6" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="G" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="7" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="H" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="8" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="B" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="C" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="D" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="E" textAlignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="F" textAlignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="G" textAlignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="H" textAlignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="0" />
                   </children>
                   <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -96,14 +103,14 @@
               <left>
                 <GridPane prefHeight="480.0" prefWidth="60.0">
                   <children>
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="1" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="2" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="3" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="4" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="5" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="6" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="7" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="8" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="1" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="2" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="3" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="4" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="5" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="6" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="7" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="8" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="7" />
                   </children>
                   <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -123,14 +130,14 @@
               <right>
                 <GridPane prefHeight="480.0" prefWidth="60.0">
                   <children>
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="8" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="1" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="2" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="3" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="4" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="5" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="6" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="7" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="8" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="1" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="2" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="3" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="4" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="5" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="6" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="7" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="6" />
                   </children>
                   <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -150,14 +157,14 @@
               <top>
                 <GridPane prefHeight="60.0" prefWidth="600.0">
                   <children>
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="B" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="C" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="D" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="E" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="5" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="F" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="6" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="G" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="7" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="H" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="8" GridPane.rowIndex="0" />
-                    <Label alignment="CENTER" contentDisplay="LEFT" font="$x1" prefHeight="60.0" prefWidth="60.0" text="A" textAlignment="CENTER" underline="false" wrapText="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="B" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="C" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="D" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="E" textAlignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="F" textAlignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="G" textAlignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="H" textAlignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="0" />
+                    <Label alignment="CENTER" font="$x1" prefHeight="60.0" prefWidth="60.0" text="A" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                   </children>
                   <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -181,34 +188,40 @@
               <children>
                 <FlowPane prefHeight="570.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <children>
-                    <HBox prefHeight="150.0" prefWidth="400.0">
+                    <HBox alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="400.0">
                       <children>
-                        <AnchorPane prefHeight="150.0" prefWidth="150.0">
+                        <Label maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0" styleClass="black-piece" />
+                        <AnchorPane prefHeight="150.0" prefWidth="146.0">
                           <children>
                             <Label id="" fx:id="ScoreBlack" alignment="CENTER" contentDisplay="CENTER" prefHeight="150.0" prefWidth="150.0" text="Black" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                               <font>
-                                <Font name="System Bold" size="60.0" fx:id="x2" />
+                                <Font name="System Bold" size="40.0" fx:id="x2" />
                               </font>
                             </Label>
                           </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="250.0">
                           <children>
-                            <Label font="$x2" prefHeight="150.0" prefWidth="250.0" text="Black" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                            <Label fx:id="BlackPlayerName" prefHeight="150.0" prefWidth="250.0" text="Black" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <font>
+                                <Font name="System Bold" size="28.0" fx:id="x3" />
+                              </font>
+                            </Label>
                           </children>
                         </AnchorPane>
                       </children>
                     </HBox>
-                    <HBox prefHeight="150.0" prefWidth="400.0">
+                    <HBox alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="400.0">
                       <children>
+                        <Label maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0" styleClass="white-piece" />
                         <AnchorPane prefHeight="150.0" prefWidth="150.0">
                           <children>
-                            <Label id="" fx:id="ScoreWhite" alignment="CENTER" contentDisplay="CENTER" font="$x2" prefHeight="150.0" prefWidth="150.0" text="White" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                            <Label id="" fx:id="ScoreWhite" alignment="CENTER" contentDisplay="CENTER" font="$x2" prefHeight="80.0" prefWidth="80.0" text="White" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                           </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="250.0">
                           <children>
-                            <Label font="$x2" prefHeight="150.0" prefWidth="250.0" text="White" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                            <Label fx:id="WhitePlayerName" font="$x3" prefHeight="150.0" prefWidth="250.0" text="White" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                           </children>
                         </AnchorPane>
                       </children>

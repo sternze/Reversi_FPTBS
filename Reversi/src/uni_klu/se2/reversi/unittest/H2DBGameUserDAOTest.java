@@ -51,9 +51,9 @@ public class H2DBGameUserDAOTest {
 		
 		System.out.println("Users created");
 
-		UUID gameID = myGame.createGame("Peppi", "Horst");
+		UUID gameID = myGame.createGame("Peppi", "Horst", 0, 0);
 		System.out.println("Game Peppi - Horst created");
-		myGame.createGame("Peppi", "Gudrun");
+		myGame.createGame("Peppi", "Gudrun", 0, 0);
 		System.out.println("Game Peppi - Gudrun created");
 
 		List<Game> allGames = myGame.getAllGames(true);

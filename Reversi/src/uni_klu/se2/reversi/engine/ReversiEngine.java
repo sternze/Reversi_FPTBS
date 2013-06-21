@@ -39,7 +39,6 @@ public class ReversiEngine
 
 		if (board.getStatus() != BoardStatus.INPROGRESS)
 		{
-			
 			if (turn%2 == 0)
 				player1.signalLastMove();
 			else

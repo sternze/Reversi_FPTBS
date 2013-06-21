@@ -3,6 +3,10 @@ package uni_klu.se2.reversi.data;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
+
+import uni_klu.se2.reversi.db.factories.DAOFactory;
+import uni_klu.se2.reversi.db.interfaces.GameDAO;
 
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -27,12 +31,21 @@ public class Board {
 	private boolean fieldCountsUpdated;
 	private Move lastMove;
 	
+	private UUID gameGuid;
+	private final String DB_FIELD_SEPERATOR = ";";
+
+	
 	public final int BOARDSIZE = 8;
 
 	public Move getLastMove() {
 		return lastMove;
 	}
 
+	public Board(UUID gameId) {
+		this();
+		this.gameGuid = gameId;
+	}
+	
 	public Board() {
 		super();
 		this.fields = new Field[BOARDSIZE][BOARDSIZE];
@@ -45,8 +58,15 @@ public class Board {
 		fieldCountsUpdated = false;
 		statusCalculated = false;
 		lastMove = null;
+		gameGuid = null;
 	}
 
+	public Board(UUID gameId, Field[][] fields, FieldStatus currentPlayer) {
+		this(fields, currentPlayer);
+		this.gameGuid = gameId;
+	}
+	
+	
 	public Board(Field[][] fields, FieldStatus currentPlayer) {
 		super();
 		this.fields = new Field[BOARDSIZE][BOARDSIZE];
@@ -60,6 +80,7 @@ public class Board {
 		fieldCountsUpdated = false;
 		statusCalculated = false;
 		lastMove = null;
+		gameGuid = null;
 	}
 
 	public Board cloneBoard() {
@@ -98,9 +119,24 @@ public class Board {
 					this.status = BoardStatus.WHITEWON;
 				else
 					this.status = BoardStatus.DRAW;
+				
+				if(gameGuid != null) {
+					finishGameInDB();
+				}
 			}
 		}
 		return this.status;
+	}
+
+	private void finishGameInDB() {
+		// create the required DAO Factory
+		DAOFactory h2DBFactory = DAOFactory.getDAOFactory(DAOFactory.H2DB);
+
+		// Create a DAO
+		GameDAO myGame = h2DBFactory.getGameDAO();
+		
+		myGame.setGameToFinished(gameGuid);
+		
 	}
 
 	public Field[][] getFields() {
@@ -126,9 +162,48 @@ public class Board {
 			fields[x][y].setBlack();
 			currentPlayer = FieldStatus.WHITE;
 		}
+		
+		if(gameGuid != null) {
+			updateGameInDB();
+		}
+		
 		return true;
 	}
 
+	private void updateGameInDB() {
+		if(this.gameGuid != null) {
+			// create the required DAO Factory
+			DAOFactory h2DBFactory = DAOFactory.getDAOFactory(DAOFactory.H2DB);
+	
+			// Create a DAO
+			GameDAO myGame = h2DBFactory.getGameDAO();
+			
+			Game g = myGame.getGame(gameGuid);
+			if(g != null) {
+				g.setBlackFields(getFieldsForDB(FieldStatus.BLACK));
+				g.setWhiteFields(getFieldsForDB(FieldStatus.WHITE));
+				g.setBlacksTurn(currentPlayer == FieldStatus.BLACK ? true : false);
+				
+				myGame.updateGame(g);
+			}
+		}
+	}
+
+	private String getFieldsForDB(FieldStatus colorNeeded) {
+		String accordingFields = "";
+		
+		for(int i = 0; i < BOARDSIZE; i++) {
+			for(int j = 0; j < BOARDSIZE; j++) {
+				if(fields[i][j].getStatus().get() == colorNeeded) {
+					accordingFields += i + "_" + j + DB_FIELD_SEPERATOR;
+				}
+			}
+		}
+		
+		return accordingFields;
+	}
+
+	
 	public boolean pass() {
 		if (getStatus() != BoardStatus.INPROGRESS)
 			return false;
@@ -300,6 +375,7 @@ public class Board {
 					}
 				}
 			}
+
 	}
 
 	private void updateFieldCounts() {

@@ -77,7 +77,9 @@ public class H2DBDAOFactory extends DAOFactory {
 					"blackFields varchar(" + Integer.MAX_VALUE + ")," +
 					"whiteFields varchar(" + Integer.MAX_VALUE + ")," +
 					"finished BOOLEAN," +
-					"blacksTurn BOOLEAN)");
+					"blacksTurn BOOLEAN, " +
+					"blackAlgorithmId INT, " +
+					"whiteAlgorithmId INT)");
 			
 			if(!prepstmt.execute()) {
 				if(prepstmt.getUpdateCount() == 0) {

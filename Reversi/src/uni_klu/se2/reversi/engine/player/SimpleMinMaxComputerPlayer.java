@@ -8,6 +8,8 @@ import uni_klu.se2.reversi.engine.IPlayer;
 import uni_klu.se2.reversi.engine.ReversiEngine;
 import uni_klu.se2.reversi.engine.algorithms.SimpleMinMax;
 
+import javafx.application.Platform;
+
 import javax.swing.SwingWorker;
 
 
@@ -28,15 +30,25 @@ public class SimpleMinMaxComputerPlayer extends IPlayer
 
 		@Override
 		protected Boolean doInBackground() throws Exception {
-			List<Move> moves = board.getAvailableMoves();
+			final List<Move> moves = board.getAvailableMoves();
 			Thread.sleep(250);
 			int size = moves.size();
 			if (size > 0)
 			{
-				engine.onMoveReadyCalculated(SimpleMinMax.getMove(moves, board), false);
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	                	engine.onMoveReadyCalculated(SimpleMinMax.getMove(moves, board), false);
+	                }
+	            });
+				//engine.onMoveReadyCalculated(SimpleMinMax.getMove(moves, board), false);
 			} else 
 			{
-				engine.onMoveReadyCalculated(null, true);
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	                	engine.onMoveReadyCalculated(null, true);
+	                }
+	            });
+//				engine.onMoveReadyCalculated(null, true);
 				System.out.println("AITrail Player : Pass!");
 			}
 			return null;

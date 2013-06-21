@@ -15,7 +15,8 @@ import uni_klu.se2.reversi.engine.IPlayer;
 public class ReversiModel extends IPlayer {
 	
 	private boolean myTurn;
-	
+	private boolean showPossibleMoves = true;
+		
 	public ReversiModel(Board board) {
 		super(board);
 		this.board = board;
@@ -78,7 +79,9 @@ public class ReversiModel extends IPlayer {
 	
 	@Override
 	public void yourTurn() {
-		showLegalMoves();
+		if(showPossibleMoves) {
+			showLegalMoves();
+		}
 		myTurn = true;
 	}
 
@@ -89,4 +92,18 @@ public class ReversiModel extends IPlayer {
 	public boolean getMyTurn() {
 		return myTurn;
 	}
+
+	public boolean isShowPossibleMoves() {
+		return showPossibleMoves;
+	}
+
+	public void setShowPossibleMoves(boolean showPossibleMoves) {
+		this.showPossibleMoves = showPossibleMoves;
+		if(this.showPossibleMoves) {
+			showLegalMoves();
+		} else {
+			hideLegalMoves();
+		}
+	}
+	
 }

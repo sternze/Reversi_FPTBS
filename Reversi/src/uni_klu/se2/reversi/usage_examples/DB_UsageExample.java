@@ -46,7 +46,7 @@ public class DB_UsageExample {
 		// Create a DAO
 		GameDAO gameDAO = h2DBFactory.getGameDAO();
 		
-		UUID gameID = gameDAO.createGame(blackUserName, whiteUserName);
+		UUID gameID = gameDAO.createGame(blackUserName, whiteUserName, 0, 0);
 		
 		return gameID;
 	}
@@ -91,8 +91,7 @@ public class DB_UsageExample {
 		Field[][] fields = getFieldArrayFromGame(g);
 		
 		FieldStatus currentPlayer = g.isBlacksTurn() == true ? FieldStatus.BLACK : FieldStatus.WHITE;
-		
-		
+
 	}
 
 	private static Field[][] getFieldArrayFromGame(Game g) {

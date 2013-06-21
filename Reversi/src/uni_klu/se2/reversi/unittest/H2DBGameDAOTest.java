@@ -32,7 +32,7 @@ public class H2DBGameDAOTest {
 
 	@Test
 	public void testCRUDGame() {
-		UUID GameGuid = myGame.createGame("", "");
+		UUID GameGuid = myGame.createGame("", "", 0, 0);
 		
 		System.out.println("Created Game");
 		Game createdGame = myGame.getGame(GameGuid);

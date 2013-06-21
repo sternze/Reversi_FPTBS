@@ -6,7 +6,10 @@ import uni_klu.se2.reversi.data.Board;
 import uni_klu.se2.reversi.data.Move;
 import uni_klu.se2.reversi.engine.IPlayer;
 import uni_klu.se2.reversi.engine.ReversiEngine;
+import uni_klu.se2.reversi.engine.algorithms.DeepMinMax;
 import uni_klu.se2.reversi.engine.algorithms.NaivDiskSquare;
+
+import javafx.application.Platform;
 
 import javax.swing.SwingWorker;
 
@@ -34,10 +37,20 @@ public class NaivDiskSquareComputerPlayer extends IPlayer
 			int size = moves.size();
 			if (size > 0)
 			{
-				engine.onMoveReadyCalculated(NaivDiskSquare.getMove(board, depth), false);
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	                	engine.onMoveReadyCalculated(NaivDiskSquare.getMove(board, depth), false);
+	                }
+	            });
+				//engine.onMoveReadyCalculated(NaivDiskSquare.getMove(board, depth), false);
 			} else 
 			{
-				engine.onMoveReadyCalculated(null, true);
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	                	engine.onMoveReadyCalculated(null, true);
+	                }
+	            });
+	//			engine.onMoveReadyCalculated(null, true);
 				System.out.println("NaivDisk Player: Pass!");
 			}
 			return null;

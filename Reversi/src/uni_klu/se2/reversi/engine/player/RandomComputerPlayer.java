@@ -7,6 +7,9 @@ import uni_klu.se2.reversi.data.Board;
 import uni_klu.se2.reversi.data.Move;
 import uni_klu.se2.reversi.engine.IPlayer;
 import uni_klu.se2.reversi.engine.ReversiEngine;
+import uni_klu.se2.reversi.engine.algorithms.NaivDiskSquare;
+
+import javafx.application.Platform;
 
 import javax.swing.SwingWorker;
 
@@ -34,12 +37,22 @@ public class RandomComputerPlayer extends IPlayer
 			{
 				Random r = new Random();
 				int num = r.nextInt(size);
-				Move nextMove = moves.get(num);
+				final Move nextMove = moves.get(num);
 				//System.out.println("Random Player " + number + ": " + nextMove.getX() + " " + nextMove.getY());
-				engine.onMoveReadyCalculated(nextMove, false);
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	                	engine.onMoveReadyCalculated(nextMove, false);
+	                }
+	            });
+				//engine.onMoveReadyCalculated(nextMove, false);
 			} else 
 			{
-				engine.onMoveReadyCalculated(null, true);
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	                	engine.onMoveReadyCalculated(null, true);
+	                }
+	            });
+//				engine.onMoveReadyCalculated(null, true);
 				System.out.println("Random Player: Pass!");
 			}
 			return null;

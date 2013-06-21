@@ -3,6 +3,8 @@ package uni_klu.se2.reversi.data;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javafx.beans.property.SimpleObjectProperty;
+
 /**
  * This class is the transport class in the DAO Pattern
  * @author Daniel
@@ -10,6 +12,9 @@ import java.util.UUID;
  *
  */
 public class Game implements Serializable {
+
+	private static final int BOARDSIZE = 8;
+	private static final String DB_FIELD_SEPERATOR = ";";
 	
 	/**
 	 * Beim Serialisieren eines Objektes wird auch die serialVersionUID der zugehörigen
@@ -27,6 +32,8 @@ public class Game implements Serializable {
 	private String whiteFields;
 	private boolean finished;
 	private boolean blacksTurn;
+	private int blackAlgorithmId;
+	private int whiteAlgorithmId;	
 	private User blackPlayer;
 	private User whitePlayer;
 	
@@ -88,6 +95,44 @@ public class Game implements Serializable {
 
 	public void setBlacksTurn(boolean blacksTurn) {
 		this.blacksTurn = blacksTurn;
+	}
+	
+	public Field[][] getFieldArray() {
+		Field[][] f = new Field[BOARDSIZE][BOARDSIZE];
+		
+		for (int i = 0; i < BOARDSIZE; i++)
+			for (int j = 0; j < BOARDSIZE; j++) {
+				f[i][j] = new Field(i, j);
+				if(this.getBlackFields().contains(i + "_" + j + DB_FIELD_SEPERATOR)) {
+					f[i][j].setStatus(new SimpleObjectProperty<FieldStatus>(FieldStatus.BLACK));
+				} else if(this.getWhiteFields().contains(i + "_" + j + DB_FIELD_SEPERATOR)) {
+					f[i][j].setStatus(new SimpleObjectProperty<FieldStatus>(FieldStatus.WHITE));
+				} else {
+					f[i][j].setStatus(new SimpleObjectProperty<FieldStatus>(FieldStatus.EMPTY));
+				}
+			}
+		
+		return f;
+	}
+	
+	public FieldStatus getCurrentPlayer() {
+		return this.isBlacksTurn() == true ? FieldStatus.BLACK : FieldStatus.WHITE;
+	}
+
+	public int getBlackAlgorithmId() {
+		return blackAlgorithmId;
+	}
+
+	public void setBlackAlgorithmId(int blackAlgorithmId) {
+		this.blackAlgorithmId = blackAlgorithmId;
+	}
+
+	public int getWhiteAlgorithmId() {
+		return whiteAlgorithmId;
+	}
+
+	public void setWhiteAlgorithmId(int whiteAlgorithmId) {
+		this.whiteAlgorithmId = whiteAlgorithmId;
 	}
 	
 	

@@ -8,6 +8,8 @@ import uni_klu.se2.reversi.engine.IPlayer;
 import uni_klu.se2.reversi.engine.ReversiEngine;
 import uni_klu.se2.reversi.helper.SocketHelper;
 
+import javafx.application.Platform;
+
 import javax.swing.SwingWorker;
 
 public class SocketPlayer extends IPlayer
@@ -38,11 +40,22 @@ public class SocketPlayer extends IPlayer
 			if (board.getStatus() != BoardStatus.INPROGRESS)
 				return null;
 			//Receive Client Move
-			Move nextMove = socketHelper.getMove();
-			if (nextMove == null)
-				engine.onMoveReadyCalculated(null, true);
-			else
-				engine.onMoveReadyCalculated(nextMove, nextMove.isPassMove());
+			final Move nextMove = socketHelper.getMove();
+			if (nextMove == null) {
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	                	engine.onMoveReadyCalculated(null, true);
+	                }
+	            });
+				//engine.onMoveReadyCalculated(null, true);
+			} else {
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	                	engine.onMoveReadyCalculated(nextMove, nextMove.isPassMove());
+	                }
+	            });
+				//engine.onMoveReadyCalculated(nextMove, nextMove.isPassMove());
+			}
 			return null;
 		}
 		

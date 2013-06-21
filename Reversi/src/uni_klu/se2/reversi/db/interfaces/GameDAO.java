@@ -12,7 +12,7 @@ import uni_klu.se2.reversi.data.Game;
  *
  */
 public interface GameDAO {
-	public UUID createGame(String blackUser_Name, String whiteUser_Name);
+	public UUID createGame(String blackUser_Name, String whiteUser_Name, int blackAlgId, int whiteAlgId);
 	public boolean setGameToFinished(UUID gameID);
 	public List<Game> getAllGames(boolean includeFinishedGames);
 	public List<Game> getGamesOfUser(String userName, boolean includeFinishedGames);
