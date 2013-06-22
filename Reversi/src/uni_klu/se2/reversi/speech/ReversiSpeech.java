@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.stage.Window;
+import jfx.messagebox.MessageBox;
 import uni_klu.se2.reversi.data.Move;
 
 import com.sun.speech.freetts.VoiceManager;
@@ -18,11 +20,8 @@ public class ReversiSpeech {
 	
 	public ReversiSpeech() { }
 	
-	public ReversiSpeech(List<Move> possibleMoves) {
-		createTemporaryFile(possibleMoves);
-	}
 	
-	private void createTemporaryFile(List<Move> possibleMoves) {
+	public void createTemporaryFile(List<Move> possibleMoves) {
 		try {
 			PrintWriter writer = new PrintWriter("./src/uni_klu/se2/reversi/speech/CurrentPossibleGrammar.gram", "UTF-8");
 			writer.println("#JSGF V1.0;");
@@ -30,9 +29,8 @@ public class ReversiSpeech {
 			writer.println(" * JSGF Grammar for temporary generated file");
 			writer.println(" */");
 			writer.println("grammar CurrentPossibleGrammar;");
-			writer.println("public <input> = (");
 			
-			String grammarString = "";
+			String grammarString = "public <input> = (";
 			
 			for(Move m : possibleMoves) {
 				grammarString += "(";
@@ -59,31 +57,31 @@ public class ReversiSpeech {
 				}
 				
 				switch (m.getY()) {
-				case 0: grammarString += "One),";
+				case 0: grammarString += "One) | ";
 				break;
-				case 1: grammarString += "Two),";
+				case 1: grammarString += "Two) | ";
 				break;
-				case 2: grammarString += "Three),";
+				case 2: grammarString += "Three) | ";
 				break;
-				case 3: grammarString += "Four),";
+				case 3: grammarString += "Four) | ";
 				break;
-				case 4: grammarString += "Five),";
+				case 4: grammarString += "Five) | ";
 				break;
-				case 5: grammarString += "Six),";
+				case 5: grammarString += "Six) | ";
 				break;
-				case 6: grammarString += "Seven),";
+				case 6: grammarString += "Seven) | ";
 				break;
-				case 7: grammarString += "Eight),";
+				case 7: grammarString += "Eight) | ";
 				break;
 				default:
 					break;
 				}
 			}
 			
-			grammarString = grammarString.substring(0, grammarString.length()-1);
+			grammarString = grammarString.substring(0, grammarString.length()-3);
 			
+			grammarString += ");";
 			writer.print(grammarString);
-			writer.print(");");
 			writer.close();
 
 		} catch (Exception ex) {
@@ -91,30 +89,34 @@ public class ReversiSpeech {
 		}
 	}
 
-	/**
-	 * The beneath code is just a usage example
-	 */
-	public void example(List<Move> possibleMoves) {
-		
+	
+	public Move recognizeNow(List<Move> possibleMoves, Window primaryStage) {
 		String recognizedConfirmation = "";
 		String recognizedText = "";
 		
+		saySomething("I will try to recognize your move now.", false);
+		
 		do {
-			recognizedText = recognizeSpeech("Please start speaking in one second.");
+			recognizedText = recognizeSpeech(null, primaryStage, false);
 			
-			
-			if(IsRecognizedTextAValidMove(recognizedText, possibleMoves)) {
+			if(recognizedText != null) {
+				saySomething(recognizedText, true);
 				saySomething("Are you sure?", false);
-				
-				recognizedConfirmation = recognizeSpeech("Say yes or no)");
-			} else {
-				saySomething("I understood " + recognizedText + ". This is not a valid move. Please repeat when prompted.", false);
-				recognizedConfirmation = "no";
+				recognizedConfirmation = recognizeSpeech("Say yes, no, or abort.", primaryStage, true);
 			}
 			
+			if(recognizedConfirmation.equals("no")) {
+				saySomething("Ok, please repeat your move when prompted.", false);
+			}
 			
 		} while(recognizedConfirmation.equals("no"));
 		
+		if(recognizedConfirmation.toLowerCase().equals("abort")) {
+			saySomething("abort", true);
+			return null;
+		}
+
+		saySomething("Ok, I will make this move now.", false);
 		
 		System.out.println("ok, as you wish");
 		System.out.println();
@@ -122,68 +124,140 @@ public class ReversiSpeech {
 		System.out.println("--------------------------");
 		System.out.println("Result: " + recognizedText);
 		System.out.println("--------------------------");
-		saySomething(recognizedText, true);
 		
+		return getMoveAccordingToSpeechInput(possibleMoves, recognizedText);
 	}
-	
-	private boolean IsRecognizedTextAValidMove(String recognizedText, List<Move> possibleMoves) {
-		boolean ok = false;
-		List<String> mov = new ArrayList<String>();
+
+	private Move getMoveAccordingToSpeechInput(List<Move> possibleMoves, String recognizedText) {
+		int PosXOfMove = getValueOfRecognizedText(recognizedText, true);
+		int PosYOfMove = getValueOfRecognizedText(recognizedText, false);
 		
 		for(Move m : possibleMoves) {
-			String grammarString = "";
-			
-			switch (m.getX()) {
-			case 0: grammarString += "a ";
-				break;
-			case 1: grammarString += "b ";
-				break;
-			case 2: grammarString += "c ";
-				break;
-			case 3: grammarString += "d ";
-				break;
-			case 4: grammarString += "e ";
-				break;
-			case 5: grammarString += "f ";
-				break;
-			case 6: grammarString += "g ";
-				break;
-			case 7: grammarString += "h ";
-				break;
-			default: grammarString += "a ";
-				break;
+			if(m.getX() == PosXOfMove && m.getY() == PosYOfMove) {
+				return m;
 			}
-			
-			switch (m.getY()) {
-			case 0: grammarString += "one";
-			break;
-			case 1: grammarString += "two";
-			break;
-			case 2: grammarString += "three";
-			break;
-			case 3: grammarString += "four";
-			break;
-			case 4: grammarString += "five";
-			break;
-			case 5: grammarString += "six";
-			break;
-			case 6: grammarString += "seven";
-			break;
-			case 7: grammarString += "eight";
-			break;
-			default: grammarString += "one";
-				break;
-			}
-			
-			mov.add(grammarString);
 		}
-		
-		if(mov.contains(recognizedText.toLowerCase())) {
-			ok = true;
-		}
-		
-		return ok;
+		return null;
 	}
+
+
+	private int getValueOfRecognizedText(String recognizedText, boolean isXValue) {
+		int val = 0;
+		String X = "";
+		String Y = "";
+		
+		if(isXValue) {
+			X = recognizedText.trim().split(" ")[0].toLowerCase();
+			
+			switch (X) {
+				case "a": val = 0;
+				break;
+				case "b": val = 1;
+				break;
+				case "c": val = 2;
+				break;
+				case "d": val = 3;
+				break;
+				case "e": val = 4;
+				break;
+				case "f": val = 5;
+				break;
+				case "g": val = 6;
+				break;
+				case "h": val = 7;
+				break;
+				default: val = 0;
+				break;
+			}
+		} else {
+			Y = recognizedText.trim().split(" ")[1].toLowerCase();
+			
+			switch (Y) {
+				case "one": val = 0;
+				break;
+				case "two": val = 1;
+				break;
+				case "three": val = 2;
+				break;
+				case "four": val = 3;
+				break;
+				case "five": val = 4;
+				break;
+				case "six": val = 5;
+				break;
+				case "seven": val = 6;
+				break;
+				case "eight": val = 7;
+				break;
+				default: val = 0;
+				break;
+			}
+		}
+		
+		return val;
+	}
+	
+	
+	
+//	private boolean IsRecognizedTextAValidMove(String recognizedText, List<Move> possibleMoves) {
+//		boolean ok = false;
+//		List<String> mov = new ArrayList<String>();
+//		
+//		for(Move m : possibleMoves) {
+//			String grammarString = "";
+//			
+//			switch (m.getX()) {
+//			case 0: grammarString += "a ";
+//				break;
+//			case 1: grammarString += "b ";
+//				break;
+//			case 2: grammarString += "c ";
+//				break;
+//			case 3: grammarString += "d ";
+//				break;
+//			case 4: grammarString += "e ";
+//				break;
+//			case 5: grammarString += "f ";
+//				break;
+//			case 6: grammarString += "g ";
+//				break;
+//			case 7: grammarString += "h ";
+//				break;
+//			default: grammarString += "a ";
+//				break;
+//			}
+//			
+//			switch (m.getY()) {
+//			case 0: grammarString += "one";
+//			break;
+//			case 1: grammarString += "two";
+//			break;
+//			case 2: grammarString += "three";
+//			break;
+//			case 3: grammarString += "four";
+//			break;
+//			case 4: grammarString += "five";
+//			break;
+//			case 5: grammarString += "six";
+//			break;
+//			case 6: grammarString += "seven";
+//			break;
+//			case 7: grammarString += "eight";
+//			break;
+//			default: grammarString += "one";
+//				break;
+//			}
+//			
+//			mov.add(grammarString);
+//		}
+//		
+//		if(mov.contains(recognizedText.toLowerCase())) {
+//			ok = true;
+//		}
+//		
+//		return ok;
+//	}
+
 
 	public void saySomething(String text, boolean onlyRecognizedText) {
 		Voice voiceKevin16 = new Voice("kevin16");
@@ -193,34 +267,48 @@ public class ReversiSpeech {
             "You said"
         };
 
+
         if(onlyRecognizedText) {
         	voiceKevin16.say(thingsToSay);
+            voiceKevin16.say(text.split(" "));
+        } else {
+            voiceKevin16.say(text);
         }
-        voiceKevin16.say(text.split(" "));
+        
         voiceKevin16.dispose();
 	}
 	
-	public String recognizeSpeech(String output) {
+	public String recognizeSpeech(String output, Window primaryStage, boolean confirmation) {
 		String returnVal = "";
 		
-		ConfigurationManager cm = new ConfigurationManager(ReversiSpeech.class.getResource("ReversiInputCurrentPossibleGrammar.config.xml"));
+		ConfigurationManager cm  = null;
+		if(confirmation) {
+			cm = new ConfigurationManager(ReversiSpeech.class.getResource("ReversiInputConfirmation.config.xml"));
+		} else {
+			cm = new ConfigurationManager(ReversiSpeech.class.getResource("ReversiInputCurrentPossibleGrammar.config.xml"));
+		}
 		
+		if(output != null) {
+			saySomething(output, false);
+		}
 		
 		Recognizer recognizer = (Recognizer) cm.lookup("recognizer");
         recognizer.allocate();
  
+        
         // start the microphone or exit if the programm if this is not possible
         Microphone microphone = (Microphone) cm.lookup("microphone");
+        
+        MessageBox.show(primaryStage, "Please start speaking after clicking on ok.", "Start speaking.", MessageBox.ICON_INFORMATION | MessageBox.OK);
+        
         if (!microphone.startRecording()) {
-            System.out.println("Cannot start microphone.");
+        	MessageBox.show(primaryStage, "There was a problem while starting your microphone.", "Error while starting Mic.", MessageBox.ICON_ERROR | MessageBox.OK);
+            //System.out.println("Cannot start microphone.");
             recognizer.deallocate();
-            System.exit(1);
+            //System.exit(1);
+            return null;
         }
- 
-        //System.out.println(output);
- 
-        saySomething(output, false);
- 
+  
         Result result = recognizer.recognize();
  
         if (result != null) {

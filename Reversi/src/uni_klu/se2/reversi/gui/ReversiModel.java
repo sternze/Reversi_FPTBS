@@ -63,7 +63,11 @@ public class ReversiModel extends IPlayer {
 	private void showLegalMoves() {
 		System.out.println("checkLegalMoves");
 		List<Move> legalMoves = board.getAvailableMoves();
-		ReversiSpeech rs = new ReversiSpeech(legalMoves);	// check where to hook the speech recognition
+		
+		ReversiSpeech rs = new ReversiSpeech();
+		rs.createTemporaryFile(legalMoves);
+		rs = null;
+		
 		Iterator<Move> iterator = legalMoves.iterator();
 		while(iterator.hasNext())
 		{

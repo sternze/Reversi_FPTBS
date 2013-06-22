@@ -95,7 +95,7 @@
     <component name="jsgfGrammar" type="edu.cmu.sphinx.jsgf.JSGFGrammar">
         <property name="dictionary" value="dictionary"/>
         <property name="grammarLocation"
-             value="resource:/test/"/>
+             value="resource:/uni_klu/se2/reversi/speech/"/>
         <property name="grammarName" value="ConfirmationGrammar"/>
 	<property name="logMath" value="logMath"/>
     </component>

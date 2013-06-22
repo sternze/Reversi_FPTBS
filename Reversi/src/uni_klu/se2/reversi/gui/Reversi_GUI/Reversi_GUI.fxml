@@ -227,6 +227,11 @@
                         </AnchorPane>
                       </children>
                     </HBox>
+                    <HBox alignment="CENTER" prefHeight="150.0" prefWidth="400.0">
+                      <children>
+                        <Button fx:id="bRecognizeSpeech" disable="true" mnemonicParsing="false" onAction="#bRecognizeSpeechClicked" prefHeight="41.0" prefWidth="192.0" text="Recognize My Speech Now" visible="false" />
+                      </children>
+                    </HBox>
                   </children>
                 </FlowPane>
               </children>

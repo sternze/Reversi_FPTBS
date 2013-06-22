@@ -7,6 +7,7 @@ import java.util.UUID;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -18,6 +19,7 @@ import uni_klu.se2.reversi.data.Board;
 import uni_klu.se2.reversi.data.BoardStatus;
 import uni_klu.se2.reversi.data.FieldStatus;
 import uni_klu.se2.reversi.data.Game;
+import uni_klu.se2.reversi.data.Move;
 import uni_klu.se2.reversi.db.factories.DAOFactory;
 import uni_klu.se2.reversi.db.interfaces.GameDAO;
 import uni_klu.se2.reversi.engine.IPlayer;
@@ -33,6 +35,7 @@ import uni_klu.se2.reversi.gui.ReversiPiece;
 import uni_klu.se2.reversi.gui.ReversiSquare;
 import uni_klu.se2.reversi.gui.Style;
 import uni_klu.se2.reversi.helper.SocketHelperNotification;
+import uni_klu.se2.reversi.speech.ReversiSpeech;
 
 public class ReversiGUIController implements Initializable, IReversiGUI {
 
@@ -54,6 +57,8 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 	public CheckMenuItem cmiSpeechRecognition;
 	@FXML
 	private static Stage primaryStage;
+	@FXML
+	public Button bRecognizeSpeech;
 	
 	private int blackPlayerID = 1;
 	private int whitePlayerID = 0;
@@ -250,7 +255,9 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 	public void recognizeSpeechChanged(ActionEvent event) {
 		model.setRecognizeSpeech(!model.isRecognizeSpeech());
 		
-		cmiSpeechRecognition.setSelected(model.isShowPossibleMoves());
+		cmiSpeechRecognition.setSelected(model.isRecognizeSpeech());
+		bRecognizeSpeech.setVisible(model.isRecognizeSpeech());
+		bRecognizeSpeech.setDisable(!model.isRecognizeSpeech());
 	}
 
 	@FXML
@@ -281,6 +288,17 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 	
 	public void setLegoStyle(ActionEvent event) {
 		FPTBS_Reversi.changeGameStyle(Style.LEGO);
+	}
+	
+	public void bRecognizeSpeechClicked(ActionEvent event) {
+		if(model.isRecognizeSpeech()) {
+			ReversiSpeech rs = new ReversiSpeech();
+			
+			Move m = rs.recognizeNow(board.getAvailableMoves(), primaryStage);
+			if(m != null) {
+				model.play(m);
+			}
+		}
 	}
 	
 	public void startGame(ActionEvent event) {
