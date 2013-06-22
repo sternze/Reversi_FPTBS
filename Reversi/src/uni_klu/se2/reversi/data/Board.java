@@ -62,12 +62,12 @@ public class Board {
 	}
 
 	public Board(UUID gameId, Field[][] fields, FieldStatus currentPlayer) {
-		this(fields, currentPlayer);
+		this(fields, currentPlayer, null);
 		this.gameGuid = gameId;
 	}
 	
 	
-	public Board(Field[][] fields, FieldStatus currentPlayer) {
+	public Board(Field[][] fields, FieldStatus currentPlayer, Move lastMove) {
 		super();
 		this.fields = new Field[BOARDSIZE][BOARDSIZE];
 		for (int i = 0; i < BOARDSIZE; i++)
@@ -79,12 +79,12 @@ public class Board {
 		currentLegalMovesCalculated = false;
 		fieldCountsUpdated = false;
 		statusCalculated = false;
-		lastMove = null;
+		this.lastMove = lastMove;
 		gameGuid = null;
 	}
 
 	public Board cloneBoard() {
-		return new Board(this.fields, this.currentPlayer);
+		return new Board(this.fields, this.currentPlayer, this.lastMove);
 	}
 
 	public BoardStatus getStatus() {
