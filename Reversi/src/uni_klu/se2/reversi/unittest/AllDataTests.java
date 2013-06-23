@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ DataBoardTest.class, DataFieldTest.class, DataMoveTest.class })
+@SuiteClasses({ DataBoardTest.class, DataFieldTest.class, DataMoveTest.class, DataGameTest.class })
 public class AllDataTests {
 
 }
