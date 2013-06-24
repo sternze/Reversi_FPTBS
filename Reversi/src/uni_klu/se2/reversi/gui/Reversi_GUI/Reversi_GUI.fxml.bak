@@ -29,6 +29,7 @@
           <items>
             <Menu mnemonicParsing="false" text="Style">
               <items>
+                <MenuItem mnemonicParsing="false" onAction="#setStandardStyle" text="Standrd" />
                 <MenuItem mnemonicParsing="false" onAction="#setMetallicStyle" text="Metallic" />
                 <MenuItem mnemonicParsing="false" onAction="#setLegoStyle" text="Lego" />
               </items>

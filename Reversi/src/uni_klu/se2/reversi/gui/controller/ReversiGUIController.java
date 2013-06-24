@@ -290,6 +290,10 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 		FPTBS_Reversi.changeGameStyle(Style.LEGO);
 	}
 	
+	public void setStandardStyle(ActionEvent event) {
+		FPTBS_Reversi.changeGameStyle(Style.STANDARD);
+	}
+	
 	public void bRecognizeSpeechClicked(ActionEvent event) {
 		if(model.isRecognizeSpeech()) {
 			ReversiSpeech rs = new ReversiSpeech();

@@ -29,6 +29,7 @@
           <items>
             <Menu mnemonicParsing="false" text="Style">
               <items>
+                <MenuItem mnemonicParsing="false" onAction="#setStandardStyle" text="Standrd" />
                 <MenuItem mnemonicParsing="false" onAction="#setMetallicStyle" text="Metallic" />
                 <MenuItem mnemonicParsing="false" onAction="#setLegoStyle" text="Lego" />
               </items>
@@ -242,6 +243,6 @@
     </AnchorPane>
   </children>
   <stylesheets>
-    <URL value="@Reversi_GUI_Metallic.css" />
+    <URL value="@Reversi_GUI_Standard.css" />
   </stylesheets>
 </VBox>

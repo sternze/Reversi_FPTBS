@@ -3,4 +3,4 @@
  * JSGF Grammar for temporary generated file
  */
 grammar CurrentPossibleGrammar;
-public <input> = ((B Seven) | (D Seven) | (F Three) | (F Four) | (F Six) | (F Seven) | (G Five));
+public <input> = ((C Four) | (C Six) | (E Six));

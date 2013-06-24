@@ -1,0 +1,54 @@
+.menu-bar {
+    -fx-background-color: 
+    	#aeb5ba,
+    	linear-gradient(to bottom, #ecf4fa 0%, #ced4d9 100%);
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+.menu-bar .menu .label {
+    -fx-text-fill: #2d3e4c;
+}
+
+.game-background {
+	-fx-background-color: f0f0f0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: 100%;
+}
+
+.reversi-square {
+	-fx-background-image: url("skins/Standard/Feld.png");
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: 100%;
+}
+
+.reversi-square-legal {
+	-fx-background-image: url("skins/Standard/legal.png");
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: 100%;
+}
+
+.reversi-piece {
+	-fx-background-radius: 1000em;
+	-fx-background-insets: 1;
+}
+
+.black-piece {
+	-fx-background-image: url("skins/Standard/Metallic_SpielStein_Schwarz_Vektor.png");
+	-fx-background-size: 100%;
+	-fx-background-position: center center; 
+	-fx-background-repeat: no-repeat;
+}
+
+.white-piece {
+	-fx-background-image: url("skins/Standard/Metallic_SpielStein_Weis_Vektor.png");
+	-fx-background-size: 100%;
+	-fx-background-position: center center; 
+	-fx-background-repeat: no-repeat;
+}
+
+.button {
+    -fx-background-radius: 12;
+    -fx-padding: 5;
+    -fx-shadow-highlight-color: f0f0f0;
+    -fx-body-color: linear-gradient(from 0em 0em to 0em 2.083333em, white, #000000, white);
+}

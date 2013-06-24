@@ -22,7 +22,7 @@ public class ReversiSquare extends Region {
 	private final String LEGALSQUARE = "reversi-square-legal";
 	
 	private Region highlight = RegionBuilder.create().opacity(0)
-			.style("-fx-border-width: 3; -fx-border-color: dodgerblue").build();
+			.style("-fx-border-width: 3; -fx-border-color: white").build();
 
 	public ReversiSquare(final int x, final int y, ReversiModel model) {
 		ReversiSquare.model = model;
