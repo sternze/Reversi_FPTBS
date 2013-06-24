@@ -1,6 +1,7 @@
 package uni_klu.se2.reversi.gui.controller;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPaneBuilder;
 import javafx.stage.Stage;
 import jfx.messagebox.MessageBox;
@@ -28,12 +30,14 @@ import uni_klu.se2.reversi.engine.player.DeepMinMaxComputerPlayer;
 import uni_klu.se2.reversi.engine.player.NaivDiskSquareComputerPlayer;
 import uni_klu.se2.reversi.engine.player.RandomComputerPlayer;
 import uni_klu.se2.reversi.engine.player.SimpleMinMaxComputerPlayer;
+import uni_klu.se2.reversi.engine.player.SocketPlayer;
 import uni_klu.se2.reversi.gui.FPTBS_Reversi;
 import uni_klu.se2.reversi.gui.IReversiGUI;
 import uni_klu.se2.reversi.gui.ReversiModel;
 import uni_klu.se2.reversi.gui.ReversiPiece;
 import uni_klu.se2.reversi.gui.ReversiSquare;
 import uni_klu.se2.reversi.gui.Style;
+import uni_klu.se2.reversi.helper.SocketHelper;
 import uni_klu.se2.reversi.helper.SocketHelperNotification;
 import uni_klu.se2.reversi.speech.ReversiSpeech;
 
@@ -45,6 +49,10 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 	public Label ScoreBlack;
 	@FXML
 	public Label ScoreWhite;
+	@FXML
+	public Label lMyIP;
+	@FXML
+	public Label lMyPort;
 	@FXML
 	public Label BlackPlayerName;
 	@FXML
@@ -59,25 +67,51 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 	private static Stage primaryStage;
 	@FXML
 	public Button bRecognizeSpeech;
+	@FXML
+	public HBox hboxNetworkInfo;
 	
 	private int blackPlayerID = 1;
 	private int whitePlayerID = 0;
+	private String myName = "";
 
 	private static ReversiModel model;
 	private static ReversiEngine engine;
 	private static Board board;
+	private static SocketHelper socketHelper;
+	private static String myIP;
+	private static int myPort;
+	private static boolean iWasNetworkGameCreator;
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 
 		cmiShowPossibleMoves.setSelected(true);
 	}
-
+	
 	public void initGUI(UUID gameId, String blackPlayerName, String whitePlayerName, int blackPlayerId, int whitePlayerId) {
 		this.blackPlayerID = blackPlayerId;
 		this.whitePlayerID = whitePlayerId;
 		
+		hboxNetworkInfo.setVisible(false);
+		
 		resetGame(new ActionEvent(gameId, null));
+				
+		if(blackPlayerName != null && whitePlayerName != null) {
+			BlackPlayerName.setText(blackPlayerName);
+			WhitePlayerName.setText(whitePlayerName);
+		}
+	}
+	
+	public void initGUI(String blackPlayerName, String whitePlayerName, boolean iAmBlackPlayer) {
+		if(iWasNetworkGameCreator) {
+			lMyIP.setText("My IP: " + myIP);
+			lMyPort.setText("My Port: " + myPort);
+		} else {
+			lMyIP.setText("Connected IP: " + myIP);
+			lMyPort.setText("Connected Port: " + myPort);
+		}
+		hboxNetworkInfo.setVisible(true);
+		resetGame(new ActionEvent(new Boolean(iAmBlackPlayer), null));
 				
 		if(blackPlayerName != null && whitePlayerName != null) {
 			BlackPlayerName.setText(blackPlayerName);
@@ -111,6 +145,12 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 		} else {
 			board = new Board();
 		}
+		createNewModel();
+		
+		return g;
+	}
+
+	private void createNewModel() {
 		model = new ReversiModel(board);
 		for (int i = 0; i < board.BOARDSIZE; i++) {
 		    for (int j = 0; j < board.BOARDSIZE; j++) {
@@ -120,12 +160,9 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 		    	gameBoard.add(StackPaneBuilder.create().children(square, piece).build(), i, j);
 		    }
 		}
-		
-		return g;
 	}
-
+	
 	private void initScore() {
-		
 		ScoreWhite.textProperty().bind(model.getScore(FieldStatus.WHITE).asString());
 		ScoreBlack.textProperty().bind(model.getScore(FieldStatus.BLACK).asString());
 		
@@ -137,33 +174,61 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 		FPTBS_Reversi.showNewGame();		
 	}
 	
+	
+	public void playNetworkGame(String myName, String ip, int port, boolean isGameCreation) {
+		this.myName = myName;
+		myIP = ip;
+		myPort = port;
+		
+		socketHelper = new SocketHelper(this);
+		if(isGameCreation) {
+			iWasNetworkGameCreator = true;
+			socketHelper.createGameAndWaitForClient(port, true);
+		} else {
+			socketHelper.connectToHost(ip, port);
+		}		
+	}
+	
 	public void resetGame(ActionEvent event) {
 		System.out.println("reset game!");
+
+		IPlayer Pwhite;
+		IPlayer Pblack;
 		
 		clearGUI();
 		Object id = event.getSource();
 		Game g = null;
 		if(id instanceof UUID) {
-			g = initGame((UUID)event.getSource());
-		} else {
+			g = initGame((UUID)id);
+		}else {
 			g = initGame(null);
-			 MessageBox.show(primaryStage,
-		        "The following initial game is a dummy\ngame versus a random computer.\n\nIf you want to save the Game, please\ncreate a new one via the 'Game' menu.",
-		        "Information dialog",
-		        MessageBox.ICON_INFORMATION | MessageBox.OK);
+			if(!(id instanceof Boolean)) {
+				 MessageBox.show(primaryStage,
+				    "The following initial game is a dummy\ngame versus a random computer.\n\nIf you want to save the Game, please\ncreate a new one via the 'Game' menu.",
+				"Information dialog",
+				MessageBox.ICON_INFORMATION | MessageBox.OK);
+			}
 		}
 		
 		initScore();
 
-		IPlayer Pwhite;
-		IPlayer Pblack;
-		
-		if(g != null) {
-			Pwhite = getPlayer(g.getWhiteAlgorithmId());
-			Pblack = getPlayer(g.getBlackAlgorithmId());
+		if(!(id instanceof Boolean)) {
+			if(g != null) {
+				Pwhite = getPlayer(g.getWhiteAlgorithmId());
+				Pblack = getPlayer(g.getBlackAlgorithmId());
+			} else {
+				Pwhite = getPlayer(this.whitePlayerID);
+				Pblack = getPlayer(this.blackPlayerID);
+			}
 		} else {
-			Pwhite = getPlayer(this.whitePlayerID);
-			Pblack = getPlayer(this.blackPlayerID);
+			// boolean == true --> I am black player
+			if(((Boolean)id).booleanValue()) {
+				Pwhite = getPlayer(13);
+				Pblack = getPlayer(0);
+			} else {
+				Pwhite = getPlayer(0);
+				Pblack = getPlayer(13);
+			}
 		}
 		
 		engine = new ReversiEngine(board, Pwhite, Pblack);
@@ -229,6 +294,10 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 			case 12:
 				player = new DeepMinMaxComputerPlayer(board, 7); 
 				System.out.println("player: DeepMinMaxComputerPlayer(7)");
+				break;
+			case 13:
+				player = new SocketPlayer(board, socketHelper);
+				System.out.println("player: SocketPlayer");
 				break;
 			default:
 				player = model;		 
@@ -296,12 +365,14 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 	
 	public void bRecognizeSpeechClicked(ActionEvent event) {
 		if(model.isRecognizeSpeech()) {
-			ReversiSpeech rs = new ReversiSpeech();
+			List<Move> legalMoves = board.getAvailableMoves();
+			ReversiSpeech rs = new ReversiSpeech(legalMoves);
 			
-			Move m = rs.recognizeNow(board.getAvailableMoves(), primaryStage);
+			Move m = rs.recognizeNow(legalMoves, primaryStage);
 			if(m != null) {
 				model.play(m);
 			}
+			rs = null;
 		}
 	}
 	
@@ -327,7 +398,68 @@ public class ReversiGUIController implements Initializable, IReversiGUI {
 	}
 	
 	public void socketHelperNotification(SocketHelperNotification notfication) {
-		// TODO Auto-generated method stub
-		
+
+		IPlayer Pwhite;
+		IPlayer Pblack;
+		switch (notfication) {
+		case INITIALISED:
+			System.out.println("SocketHelperNotification: Initialized");
+			break;
+		case WAITING:
+			System.out.println("SocketHelperNotification: Waiting");
+			break;
+		case CONNECTED_AS_FIRST:
+
+			System.out.println("SocketHelperNotification: Connected as First");
+			System.out.println("new game!");
+			//initGUI(myName, "Network Player", true);
+			
+			
+//			clearGUI();
+//			initGame(null);
+//			initScore();
+//			Pwhite = new SocketPlayer(board, socketHelper);
+//			Pblack = model;
+//			engine = new ReversiEngine(board, Pwhite, Pblack);
+//			Pwhite.setEngine(engine);
+//			Pblack.setEngine(engine);
+//			engine.watcher = this;
+//			engine.start();
+//			System.out.println("Loading game screen");
+			FPTBS_Reversi.closeLoadingScreenForNetworkGame(this, myName, "Network Player", true);
+			break;
+		case CONNECTED_AS_SECOND:
+        	System.out.println("SocketHelperNotification: Connected as Second");
+			System.out.println("new game!");
+			
+			//initGUI("Network Player", myName, false);
+			
+//			clearGUI();
+//			initGame(null);
+//			initScore();
+//			Pblack = new SocketPlayer(board, socketHelper);
+//			Pwhite = model;
+//			engine = new ReversiEngine(board, Pwhite, Pblack);
+//			Pwhite.setEngine(engine);
+//			Pblack.setEngine(engine);
+//			engine.watcher = this;
+//			engine.start();
+//			System.out.println("Loading game screen");
+			FPTBS_Reversi.closeLoadingScreenForNetworkGame(this, "Network Player", myName, false);
+			break;
+		case DISCONNECTED:
+			System.out.println("SocketHelperNotification: Disconnected");
+			break;
+		case RECONNECTING:
+			System.out.println("SocketHelperNotification: Reconnecting");
+			break;
+		case ERROR:
+			System.out.println("SocketHelperNotification: Error");
+			break;
+		default:
+			break;
+		}
+
 	}
+
 }

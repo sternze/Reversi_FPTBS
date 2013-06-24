@@ -11,7 +11,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="311.0" prefWidth="505.0" vgap="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="uni_klu.se2.reversi.gui.NewGameGUIController">
+<GridPane hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="311.0" prefWidth="505.0" vgap="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="uni_klu.se2.reversi.gui.controller.NewGameGUIController">
   <children>
     <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="TOP">
       <image>
@@ -54,7 +54,30 @@
                 </HBox>
               </children>
             </AnchorPane>
-            <TextField id="playerOne" fx:id="playerTwo" disable="true" prefWidth="200.0" />
+            <HBox fx:id="hboxPlayer2" prefHeight="60.0" prefWidth="403.0" visible="false">
+              <children>
+                <Label text="Name of Player 2:" />
+                <TextField id="playerOne" fx:id="playerTwo" prefWidth="200.0" />
+              </children>
+            </HBox>
+            <VBox fx:id="vboxNetworkGame" prefHeight="99.0" prefWidth="403.0">
+              <children>
+                <HBox prefHeight="26.0" prefWidth="403.0">
+                  <children>
+                    <Label id="ipLabel" fx:id="ipTextLabel" text="IP Adress of Opponent:" />
+                    <TextField id="playerOne" fx:id="tbIpOfOpponent" prefWidth="123.0" />
+                  </children>
+                </HBox>
+                <HBox prefHeight="26.0" prefWidth="403.0">
+                  <children>
+                    <Label fx:id="portTextLabel" text="Port of Opponent:" />
+                    <TextField id="playerOne" fx:id="tbPortOfOpponent" prefWidth="42.0" />
+                    <Separator orientation="VERTICAL" prefHeight="26.0" prefWidth="42.0" />
+                    <CheckBox fx:id="cbCreateNewNetworkGame" mnemonicParsing="false" onAction="#cbCreateNewNetworkGame_Checked" text="Create new network game" />
+                  </children>
+                </HBox>
+              </children>
+            </VBox>
           </children>
         </VBox>
       </children>

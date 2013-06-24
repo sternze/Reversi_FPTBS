@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javafx.application.Platform;
+
 import javax.swing.SwingWorker;
 import uni_klu.se2.reversi.data.Move;
 
@@ -95,12 +97,21 @@ public class SocketHelper {
 		protected Boolean doInBackground() throws Exception 
 		{
 			try {
-				gui.socketHelperNotification(SocketHelperNotification.WAITING);
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	                	gui.socketHelperNotification(SocketHelperNotification.WAITING);
+	                }
+	            });
+				
 			    server = new ServerSocket(port);
 			} 
 			catch (IOException e) {
 			    System.out.println("Could not listen on port: " + port);
-			    gui.socketHelperNotification(SocketHelperNotification.ERROR);
+			    Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	                	gui.socketHelperNotification(SocketHelperNotification.ERROR);
+	                }
+	            });
 			}
 			try {
 			    client = server.accept();
@@ -115,12 +126,21 @@ public class SocketHelper {
 			if (isHostFirstPlayer)
 			{
 				out.println("first");
-				gui.socketHelperNotification(SocketHelperNotification.CONNECTED_AS_SECOND);
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	    				gui.socketHelperNotification(SocketHelperNotification.CONNECTED_AS_SECOND);
+	                }
+	            });
 			}
 			else
 			{
 				out.println("second");
-				gui.socketHelperNotification(SocketHelperNotification.CONNECTED_AS_FIRST);
+
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	    				gui.socketHelperNotification(SocketHelperNotification.CONNECTED_AS_FIRST);
+	                }
+	            });
 			}
 			return true;
 		}
@@ -140,10 +160,18 @@ public class SocketHelper {
 			String fromHost = in.readLine();
 			if (fromHost.equals("first"))
 			{
-				gui.socketHelperNotification(SocketHelperNotification.CONNECTED_AS_FIRST);
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	    				gui.socketHelperNotification(SocketHelperNotification.CONNECTED_AS_FIRST);
+	                }
+	            });
 			} else
 			{
-				gui.socketHelperNotification(SocketHelperNotification.CONNECTED_AS_SECOND);
+				Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	    				gui.socketHelperNotification(SocketHelperNotification.CONNECTED_AS_SECOND);
+	                }
+	            });
 			}
 			return true;
 		}

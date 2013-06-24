@@ -60,20 +60,20 @@
                 <TextField id="playerOne" fx:id="playerTwo" prefWidth="200.0" />
               </children>
             </HBox>
-            <VBox fx:id="vboxNetworkGame" prefHeight="99.0" prefWidth="403.0" visible="false">
+            <VBox fx:id="vboxNetworkGame" prefHeight="99.0" prefWidth="403.0">
               <children>
                 <HBox prefHeight="26.0" prefWidth="403.0">
                   <children>
-                    <Label id="ipLabel" fx:id="ipTextLabel" text="IP Adress of Opponent:" />
+                    <Label text="IP Adress of Opponent:" />
                     <TextField id="playerOne" fx:id="tbIpOfOpponent" prefWidth="123.0" />
                   </children>
                 </HBox>
                 <HBox prefHeight="26.0" prefWidth="403.0">
                   <children>
-                    <Label fx:id="portTextLabel" text="Port of Opponent:" />
+                    <Label text="Port of Opponent:" />
                     <TextField id="playerOne" fx:id="tbPortOfOpponent" prefWidth="42.0" />
                     <Separator orientation="VERTICAL" prefHeight="26.0" prefWidth="42.0" />
-                    <CheckBox fx:id="cbCreateNewNetworkGame" mnemonicParsing="false" onAction="#cbCreateNewNetworkGame_Checked" text="Create new network game" />
+                    <CheckBox mnemonicParsing="false" text="CreateNewGame" />
                   </children>
                 </HBox>
               </children>

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -55,9 +56,39 @@ public class FPTBS_Reversi extends Application {
 		
 		try {
 			root = (Parent) fxmlLoader.load();
-			
 			FPTBS_Reversi.controller = (ReversiGUIController)fxmlLoader.getController();
 			FPTBS_Reversi.controller.initGUI(gameId, blackName, whiteName, blackId, whiteId);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return root;
+	}
+	
+	private static Parent loadGameGUI(ReversiGUIController controllerToBeSet, String blackName, String whiteName, boolean iAmBlackPlayer) {
+		FXMLLoader fxmlLoader = new FXMLLoader(FPTBS_Reversi.me.getClass().getResource("Reversi_GUI/Reversi_GUI.fxml"));
+		Parent root = null;
+		
+		try {
+			root = (Parent) fxmlLoader.load();
+			
+			if(controllerToBeSet != null) {
+				FPTBS_Reversi.controller = (ReversiGUIController)fxmlLoader.getController();
+				FPTBS_Reversi.controller.initGUI(blackName, whiteName, iAmBlackPlayer);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return root;
+	}
+	
+	private static Parent loadWaitForNetworkPlayer(String myName) {
+		FXMLLoader fxmlLoader = new FXMLLoader(FPTBS_Reversi.me.getClass().getResource("NetworkProgressDialog/NetworkProgressDialog.fxml"));
+		Parent root = null;
+		
+		try {
+			root = (Parent) fxmlLoader.load();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -122,6 +153,19 @@ public class FPTBS_Reversi extends Application {
 		} else {
 			primaryStage.setScene(previousScene);
 		}
+	}
+	
+	public static void closeNewGameForNetworkGame(String myName, String ip, int port, boolean isNewNetworkGame) {
+		if(isNewNetworkGame) {
+			Parent root = loadWaitForNetworkPlayer(myName);
+			primaryStage.setScene(new Scene(root, 1000, 630));
+			controller.playNetworkGame(myName, ip, port, isNewNetworkGame);
+		} else {
+			Parent root = loadWaitForNetworkPlayer(myName);
+			primaryStage.setScene(new Scene(root, 1000, 630));
+			controller.playNetworkGame(myName, ip, port, isNewNetworkGame);
+		}
+		
 	}
 
 	public static void showLoadGame() {
@@ -189,6 +233,20 @@ public class FPTBS_Reversi extends Application {
 		}
 		
 		return root;
+	}
+
+	public static void abortWaitForNetworkPlayer() {		
+		gameGUI = loadGameGUI(null, "User", "Computer", 0, 1);
+		
+		primaryStage.setScene(new Scene(gameGUI, 1000, 630));
+		primaryStage.show();
+	}
+
+	public static void closeLoadingScreenForNetworkGame(ReversiGUIController contr, String blackPlayerName, String WhitePlayerName, boolean iAmBlackPlayer) {
+		gameGUI = loadGameGUI(contr, blackPlayerName, WhitePlayerName, iAmBlackPlayer);
+		
+    	primaryStage.setScene(new Scene(gameGUI, 1000, 630));
+		primaryStage.show();
 	}
 	
 }

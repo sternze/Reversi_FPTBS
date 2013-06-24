@@ -17,11 +17,16 @@ import edu.cmu.sphinx.util.props.ConfigurationManager;
 
 
 public class ReversiSpeech {
-	
+
 	public ReversiSpeech() { }
 	
+
+	public ReversiSpeech(List<Move> legalMoves) {
+		createTemporaryFile(legalMoves);
+	}
 	
-	public void createTemporaryFile(List<Move> possibleMoves) {
+	
+	private void createTemporaryFile(List<Move> possibleMoves) {
 		try {
 			PrintWriter writer = new PrintWriter("./src/uni_klu/se2/reversi/speech/CurrentPossibleGrammar.gram", "UTF-8");
 			writer.println("#JSGF V1.0;");

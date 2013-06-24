@@ -228,9 +228,23 @@
                         </AnchorPane>
                       </children>
                     </HBox>
-                    <HBox alignment="CENTER" prefHeight="150.0" prefWidth="400.0">
+                    <HBox alignment="CENTER" prefHeight="72.0" prefWidth="400.0">
                       <children>
-                        <Button fx:id="bRecognizeSpeech" disable="true" mnemonicParsing="false" onAction="#bRecognizeSpeechClicked" prefHeight="41.0" prefWidth="192.0" text="Recognize My Speech Now" visible="false" />
+                        <Button fx:id="bRecognizeSpeech" mnemonicParsing="false" onAction="#bRecognizeSpeechClicked" prefHeight="41.0" prefWidth="192.0" text="Recognize My Speech Now" visible="false" />
+                      </children>
+                    </HBox>
+                    <HBox fx:id="hboxNetworkInfo" alignment="CENTER" prefHeight="72.0" prefWidth="400.0" visible="false">
+                      <children>
+                        <VBox prefHeight="72.0" prefWidth="318.0">
+                          <children>
+                            <Label fx:id="lMyIP" text="My IP:">
+                              <font>
+                                <Font size="20.0" fx:id="x4" />
+                              </font>
+                            </Label>
+                            <Label fx:id="lMyPort" font="$x4" text="My Port:" />
+                          </children>
+                        </VBox>
                       </children>
                     </HBox>
                   </children>
