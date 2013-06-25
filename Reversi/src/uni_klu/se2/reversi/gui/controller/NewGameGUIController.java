@@ -166,6 +166,7 @@ public class NewGameGUIController implements Initializable {
 			        if (current_addr.isLoopbackAddress() || !(current_addr instanceof Inet4Address))
 			        	continue;
 			        IP = current_addr.getHostAddress();
+			        return IP;
 			    }
 			}
 		} catch(Exception ex) { }
