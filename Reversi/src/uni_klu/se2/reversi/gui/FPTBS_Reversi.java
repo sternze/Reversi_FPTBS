@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import uni_klu.se2.reversi.db.factories.DAOFactory;
 import uni_klu.se2.reversi.gui.controller.LoadGameGUIController;
 import uni_klu.se2.reversi.gui.controller.NewGameGUIController;
 import uni_klu.se2.reversi.gui.controller.ReversiGUIController;
@@ -29,8 +30,14 @@ public class FPTBS_Reversi extends Application {
 	}
 	
 	public static void main(String[] args) {
+	    createDBIfItDoesNotExist();
 	    launch(args);
 	} 
+	
+	private static void createDBIfItDoesNotExist() {
+		DAOFactory h2DBFactory = DAOFactory.getDAOFactory(DAOFactory.H2DB);		
+		h2DBFactory.createDatabase();
+	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
